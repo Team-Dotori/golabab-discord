@@ -31,7 +31,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         return generateAuthorizeLinkByToken(token);
     }
     private String generateAuthorizeLinkByToken(String token) {
-        return host + ":" + port + "/authorize?token" + token;
+        return host + ":" + port + "/authorize?token=" + token;
     }
 
     @Override
