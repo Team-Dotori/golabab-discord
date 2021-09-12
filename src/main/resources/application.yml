@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sogo_bot
+    username: root
+    password: sogonsogon0129@
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: sogobot.auth@gmail.com
+    password: sogonsogon0129@
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: # 추가 안하면 SMTPSendFailedException
+            enalble: true
+            required: true
+server:
+  address: 127.0.0.1
+  port: 8082
+jwt:
+  secret: secretsogo
+  issuer: sogobot
