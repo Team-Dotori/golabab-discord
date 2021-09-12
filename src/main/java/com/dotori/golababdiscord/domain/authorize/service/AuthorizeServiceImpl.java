@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service("standard")
+@Service
 @RequiredArgsConstructor
 public class AuthorizeServiceImpl implements AuthorizeService {
     private final AuthTokenUtils authTokenUtils;

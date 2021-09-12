@@ -6,6 +6,8 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @ControllerAdvice
 public class AuthorizeAdvice {
     @ExceptionHandler(UnsupportedJwtException.class)
@@ -13,18 +15,23 @@ public class AuthorizeAdvice {
         return "authorize/error/unsupported-jwt";
     }
 
-    @ExceptionHandler({MalformedJwtException.class})
+    @ExceptionHandler(MalformedJwtException.class)
     public String handleMalformedJwtException() {
         return "authorize/error/malformed-jwt";
     }
 
-    @ExceptionHandler({SignatureException.class})
+    @ExceptionHandler(SignatureException.class)
     public String handleSignatureException() {
         return "authorize/error/expired-jwt";
     }
 
-    @ExceptionHandler({IllegalArgumentException.class})
+    @ExceptionHandler(IllegalArgumentException.class)
     public String handleIllegalArgumentException() {
         return "authorize/error/token-not-found";
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public String handleSQLException() {
+        return "enroll/error/already-enrolled";
     }
 }
