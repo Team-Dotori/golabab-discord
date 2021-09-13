@@ -22,3 +22,6 @@ server:
 jwt:
   secret: secretsogo
   issuer: sogobot
+bot:
+  token: ODgxODU4OTIwODYyMzM5MTQy.YSy9Hg.Waxi1BiDshTfRzgXwQOhZDAr1mk
+  command-prefix: 소고야

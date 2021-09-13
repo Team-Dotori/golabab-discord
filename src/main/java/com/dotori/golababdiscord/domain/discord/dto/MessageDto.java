@@ -13,6 +13,7 @@ public class MessageDto {
     @Getter private final Color color;
     @Getter private final AuthorDto author;
     @Getter private final FooterDto footer;
+    @Getter
     private final List<SectionDto> sections;
 
     public MessageDto(TitleDto title,

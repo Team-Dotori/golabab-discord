@@ -1,5 +1,6 @@
 package com.dotori.golababdiscord.domain.enroll.service;
 
+import com.dotori.golababdiscord.domain.enroll.exception.AlreadyEnrolledException;
 import com.dotori.golababdiscord.global.dto.UserDto;
 import com.dotori.golababdiscord.global.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,5 +14,10 @@ public class EnrollServiceImpl implements EnrollService{
     @Override
     public void enroll(UserDto user) {
         userRepository.save(user.toEntity());
+    }
+
+    @Override
+    public void checkEnrollCondition(UserDto user) {
+        if(userRepository.existsById(user.getDiscordId())) throw new AlreadyEnrolledException(user);
     }
 }
