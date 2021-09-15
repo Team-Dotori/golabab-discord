@@ -4,10 +4,12 @@ import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
 import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.discord.command.RootCommand;
 import com.dotori.golababdiscord.domain.discord.command.function.AuthorizeCommand;
+import com.dotori.golababdiscord.domain.discord.command.function.VoteCommand;
 import com.dotori.golababdiscord.domain.discord.listeners.CommandListener;
 import com.dotori.golababdiscord.domain.discord.property.BotProperty;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
+import com.dotori.golababdiscord.domain.vote.scheduler.VoteScheduler;
 import com.dotori.golababdiscord.infra.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +22,10 @@ public class BotConfiguration {
     private final BotProperty botProperty;
     private final AuthorizeService authorizeService;
     private final MailService mailService;
-    private final SpringTemplateEngine templateEngine;
     private final MessageSenderService messageSenderService;
+    private final SpringTemplateEngine templateEngine;
     private final MessageViews messageViews;
+    private final VoteScheduler voteScheduler;
 
     private static SogoBot sogoBot;
     private static CommandListener commandListener;
@@ -30,9 +33,8 @@ public class BotConfiguration {
 
     @Bean
     public SogoBot sogoBot() {
-        String token = botProperty.getToken();
         if(sogoBot == null) {
-            sogoBot = new SogoBot(token);
+            sogoBot = new SogoBot(botProperty);
             sogoBot().addEventListener(commandListener());
         } return sogoBot;
     }
@@ -51,6 +53,9 @@ public class BotConfiguration {
 
             AuthorizeCommand authorizeCommand = new AuthorizeCommand("인증", mailService, messageSenderService, authorizeService, messageViews, templateEngine);
             rootCommand.addChild(authorizeCommand);
+
+            VoteCommand voteCommand = new VoteCommand("투표", voteScheduler);
+            rootCommand.addChild(voteCommand);
         }
         return rootCommand;
     }

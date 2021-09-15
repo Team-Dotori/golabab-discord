@@ -3,15 +3,37 @@ package com.dotori.golababdiscord.domain.discord.service;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class MessageSenderServiceImpl implements MessageSenderService {
     @Override
-    public void sendMessage(ReceiverDto receiver, MessageDto message) {
+    public Long sendMessage(ReceiverDto receiver, MessageDto message) {
         MessageEmbed embed = getEmbedMessageByMessage(message);
-        receiver.forEach(channel -> channel.sendMessageEmbeds(embed).complete());
+
+        AtomicLong messageId = new AtomicLong();
+        receiver.forEach(channel -> {
+            Message sentMessage = channel.sendMessageEmbeds(embed).complete();
+            message.getEmojis().forEach(emoji -> sentMessage.addReaction(emoji).complete());
+            messageId.set(sentMessage.getIdLong());
+        });
+
+        return messageId.get();
+    }
+
+    @Override
+    public void editMessage(Message origin, MessageDto edit) {
+        MessageEmbed message = getEmbedMessageByMessage(edit);
+        origin.editMessageEmbeds(message).complete();
+    }
+
+    @Override
+    public void clearReactions(Message message) {
+        message.clearReactions().complete();
     }
 
     private MessageEmbed getEmbedMessageByMessage(MessageDto message) {

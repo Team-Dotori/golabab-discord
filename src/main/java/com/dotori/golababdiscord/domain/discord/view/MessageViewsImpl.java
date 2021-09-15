@@ -4,6 +4,8 @@ import com.dotori.golababdiscord.domain.authorize.dto.DomainValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.enum_type.FailureReason;
 import com.dotori.golababdiscord.domain.discord.dto.*;
 import com.dotori.golababdiscord.domain.discord.exception.UnknownFailureReasonException;
+import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
+import com.dotori.golababdiscord.domain.vote.enum_type.VoteEmoji;
 import net.dv8tion.jda.api.utils.MarkdownUtil;
 import org.springframework.stereotype.Component;
 
@@ -85,6 +87,34 @@ public class MessageViewsImpl implements MessageViews{
         TitleDto title = new TitleDto("인증이 완료되었습니다!");
         String description = "소고봇에 가입하신것을 환영합니다!";
         Color color = new Color(32, 205, 55);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        return new MessageDto(title, description, color, author, footer);
+    }
+
+    @Override
+    public MessageDto generateVoteOpenedMessage(VoteDto vote) {
+        TitleDto title = new TitleDto(String.format("오늘%s 어떠셧나요?", vote.getMeal().getKorean()));
+        String description = "더욱 퀄리티높은 급식을 위해 가장 맛있었던 메뉴에 투표해주세요!";
+        Color color = new Color(32, 205, 55);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        MessageDto dto = new MessageDto(title, description, color, author, footer);
+        for (int i = 0; i < vote.getMenus().size(); i++) {
+            String emoji = VoteEmoji.of(i).getEmoji();
+            dto.addSection(new SectionDto("", emoji + " " + vote.getMenus().get(i), false));
+            dto.addEmoji(emoji);
+        }
+        return dto;
+    }
+
+    @Override
+    public MessageDto generateVoteClosedMessage() {
+        TitleDto title = new TitleDto("이미 투표가 종료되었습니다!");
+        String description = "다음 투표에 참여해주세요!";
+        Color color = new Color(217, 17, 62);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
         FooterDto footer = new FooterDto("", "");
 

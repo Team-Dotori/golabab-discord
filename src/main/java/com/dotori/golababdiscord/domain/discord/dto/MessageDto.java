@@ -13,8 +13,8 @@ public class MessageDto {
     @Getter private final Color color;
     @Getter private final AuthorDto author;
     @Getter private final FooterDto footer;
-    @Getter
-    private final List<SectionDto> sections;
+    @Getter private final List<SectionDto> sections;
+    @Getter private final List<String> emojis;
 
     public MessageDto(TitleDto title,
                       String description,
@@ -27,6 +27,7 @@ public class MessageDto {
         this.sections = new ArrayList<>();
         this.author = author;
         this.footer = footer;
+        this.emojis = new ArrayList<>();
     }
 
     public void addSection(SectionDto section) {
@@ -35,5 +36,9 @@ public class MessageDto {
 
     public void addSections(SectionDto... section) {
         sections.addAll(Arrays.asList(section));
+    }
+
+    public void addEmoji(String emoji) {
+        emojis.add(emoji);
     }
 }

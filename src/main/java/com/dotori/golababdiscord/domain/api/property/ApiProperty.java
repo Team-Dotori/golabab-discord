@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.discord.property;
+package com.dotori.golababdiscord.domain.api.property;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,10 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties("bot")
+@ConfigurationProperties("api")
 @Getter @Setter
-public class BotProperty {
-    private String commandPrefix;
-    private String token;
-    private Long voteChannel;
+public class ApiProperty {
+    private String baseUrl;
 }
