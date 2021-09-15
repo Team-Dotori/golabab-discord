@@ -19,10 +19,10 @@ import java.util.Date;
 @Slf4j
 public class VoteSchedulerImpl implements VoteScheduler{
     private final VoteService voteService;
-    private static final String BREAKFAST_VOTE_CRON = "0 " + 40 + " " + 15 + " * * MON-FRI";
-    private static final String LUNCH_VOTE_CRON = "0 " + 45 + " " + 15 + " * * MON-FRI";
-    private static final String DINNER_VOTE_CRON = "0 " + 50 + " " + 15 + " * * MON-FRI";
-    private static final String COLLECT_VOTE_CRON = "0 " + 51 + " " + 15 + " * * MON-FRI";
+    private static final String BREAKFAST_VOTE_CRON = "0 " + 20 + " " + 8 + " * * MON-FRI";
+    private static final String LUNCH_VOTE_CRON = "0 " + 20 + " " + 13 + " * * MON-FRI";
+    private static final String DINNER_VOTE_CRON = "0 " + 20 + " " + 19 + " * * MON-FRI";
+    private static final String COLLECT_VOTE_CRON = "0 " + 0 + " " + 20 + " * * MON-FRI";
 
     @Override
     @Scheduled(cron=COLLECT_VOTE_CRON)
