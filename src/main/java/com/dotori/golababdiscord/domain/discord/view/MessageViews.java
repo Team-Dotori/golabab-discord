@@ -17,4 +17,6 @@ public interface MessageViews {
     //Vote
     MessageDto generateVoteOpenedMessage(VoteDto vote);
     MessageDto generateVoteClosedMessage();
+    MessageDto generateAlreadyVoteMessage();
+
 }

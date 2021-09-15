@@ -13,4 +13,5 @@ public interface VoteService {
     void sendVoteResult(VoteResultGroupDto result);
     void save(InProgressVoteDto inProgressVote);
     InProgressVoteDto getInProgressVote(Date to, MealType breakfast);
+    boolean isVoteMessage(long messageIdLong);
 }

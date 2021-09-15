@@ -3,6 +3,7 @@ package com.dotori.golababdiscord.domain.vote.enum_type;
 import com.dotori.golababdiscord.domain.vote.exception.VoteEmojiNotFoundException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.dv8tion.jda.api.entities.MessageReaction;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -27,5 +28,11 @@ public enum VoteEmoji {
         Optional<VoteEmoji> result = Arrays.stream(values()).filter(voteEmoji -> voteEmoji.getId().equals(id)).findAny();
         if(result.isEmpty()) throw new VoteEmojiNotFoundException(id);
         return result.get();
+    }
+
+    public static boolean isVoteEmoji(MessageReaction reaction) {
+        String emojiName = reaction.getReactionEmote().getName();
+        return Arrays.stream(VoteEmoji.values())
+                .anyMatch(emoji -> emojiName.equals(emoji.getEmoji()));
     }
 }

@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Date;
 
 public interface InProgressVoteRepository extends JpaRepository<InProgressVote, Long> {
-    default void save() {
-
-    }
     InProgressVote getByVoteDateAndMeal(Date voteDate, MealType meal);
+    boolean existsByVoteMessageId(Long voteMessageId);
 }

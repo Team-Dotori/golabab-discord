@@ -116,7 +116,7 @@ public class VoteServiceImpl implements VoteService{
     private void close(InProgressVoteMemberDto dto) {
         Message message = sogoBot.getMessageById(dto.getVoteMessageId());
         messageSenderService.clearReactions(message);
-        messageSenderService.editMessage(message, messageViews.generateVoteClosedMessage());
+        messageSenderService.editMessageToClose(message, messageViews.generateVoteClosedMessage());
     }
 
     @Override
@@ -151,6 +151,11 @@ public class VoteServiceImpl implements VoteService{
         List<String> menus = getMenusByEntity(vote);
 
         return new InProgressVoteDto(vote.getVoteDate(), vote.getMeal(), menus, vote.getVoteMessageId());
+    }
+
+    @Override
+    public boolean isVoteMessage(long messageIdLong) {
+        return inProgressVoteRepository.existsByVoteMessageId(messageIdLong);
     }
 
     private List<String> getMenusByEntity(InProgressVote vote) {

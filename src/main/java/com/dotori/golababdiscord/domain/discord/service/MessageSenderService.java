@@ -6,8 +6,6 @@ import net.dv8tion.jda.api.entities.Message;
 
 public interface MessageSenderService {
     Long sendMessage(ReceiverDto receiver, MessageDto message);
-
-    void editMessage(Message origin, MessageDto edit);
-
+    void editMessageToClose(Message origin, MessageDto edit);
     void clearReactions(Message message);
 }

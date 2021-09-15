@@ -6,10 +6,13 @@ import com.dotori.golababdiscord.domain.discord.command.RootCommand;
 import com.dotori.golababdiscord.domain.discord.command.function.AuthorizeCommand;
 import com.dotori.golababdiscord.domain.discord.command.function.VoteCommand;
 import com.dotori.golababdiscord.domain.discord.listeners.CommandListener;
+import com.dotori.golababdiscord.domain.discord.listeners.VoteListener;
 import com.dotori.golababdiscord.domain.discord.property.BotProperty;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
+import com.dotori.golababdiscord.domain.user.service.UserService;
 import com.dotori.golababdiscord.domain.vote.scheduler.VoteScheduler;
+import com.dotori.golababdiscord.domain.vote.service.VoteService;
 import com.dotori.golababdiscord.infra.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,8 +29,11 @@ public class BotConfiguration {
     private final SpringTemplateEngine templateEngine;
     private final MessageViews messageViews;
     private final VoteScheduler voteScheduler;
+    private final VoteService voteService;
+    private final UserService userService;
 
     private static SogoBot sogoBot;
+    private static VoteListener voteListener;
     private static CommandListener commandListener;
     private static RootCommand rootCommand;
 
@@ -35,8 +41,17 @@ public class BotConfiguration {
     public SogoBot sogoBot() {
         if(sogoBot == null) {
             sogoBot = new SogoBot(botProperty);
-            sogoBot().addEventListener(commandListener());
+            sogoBot.addEventListener(commandListener());
+            sogoBot.addEventListener(voteListener());
         } return sogoBot;
+    }
+
+    @Bean
+    public VoteListener voteListener() {
+        if(voteListener == null) {
+            voteListener = new VoteListener(botProperty, userService, voteService, messageSenderService, messageViews);
+        }
+        return voteListener;
     }
 
     @Bean

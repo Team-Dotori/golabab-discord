@@ -120,4 +120,15 @@ public class MessageViewsImpl implements MessageViews{
 
         return new MessageDto(title, description, color, author, footer);
     }
+
+    @Override
+    public MessageDto generateAlreadyVoteMessage() {
+        TitleDto title = new TitleDto("이미 해당 투표에 참여하셧습니다!");
+        String description = "기존 투표이모지를 취소하고 시도해주세요!";
+        Color color = new Color(217, 17, 62);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        return new MessageDto(title, description, color, author, footer);
+    }
 }

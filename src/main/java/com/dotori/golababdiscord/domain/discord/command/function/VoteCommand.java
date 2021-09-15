@@ -15,15 +15,14 @@ public class VoteCommand extends LeafCommand {
 
     @Override
     protected void run(User user, MessageChannel channel, String args) {
-        voteScheduler.openBreakfastVote();
-        voteScheduler.openLunchVote();
-        voteScheduler.openDinnerVote();
-
         try {
+            voteScheduler.openBreakfastVote();
+            voteScheduler.openLunchVote();
+            voteScheduler.openDinnerVote();
             Thread.sleep(1000 * 60);
+            voteScheduler.collectVote();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        voteScheduler.collectVote();
     }
 }

@@ -26,7 +26,7 @@ public class MessageSenderServiceImpl implements MessageSenderService {
     }
 
     @Override
-    public void editMessage(Message origin, MessageDto edit) {
+    public void editMessageToClose(Message origin, MessageDto edit) {
         MessageEmbed message = getEmbedMessageByMessage(edit);
         origin.editMessageEmbeds(message).complete();
     }
