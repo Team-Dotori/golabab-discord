@@ -36,6 +36,7 @@ jwt:
 bot:
   token: ODgxODU4OTIwODYyMzM5MTQy.YSy9Hg.Waxi1BiDshTfRzgXwQOhZDAr1mk
   command-prefix: 소고야
-  vote-channel: 886785629671792640
-api:
-  base-url: 127.0.0.1
+  vote-channel: 887709141815136356
+vote-api:
+  base-url: http://127.0.0.1
+  port: 8080

@@ -15,7 +15,15 @@ import java.awt.*;
 public class MessageViewsImpl implements MessageViews{
     @Override
     public MessageDto generateRequestAuthorizeMessage() {
-        return null;
+        TitleDto title = new TitleDto("SW마이스터 고등학교 재학생이신가요?", "https://mail.google.com/mail");
+        String description = "\"소고야 인증\" 명령어를 통해 여러분이 SW마이스터고 재학생임을 인증해주세요!";
+        Color color = new Color(32, 205, 55);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("");
+
+        MessageDto dto = new MessageDto(title, description, color, author, footer);
+        dto.addSection(new SectionDto("", "인증을 마치셔야 골라밥 투표 및 그외 다양한 서비스들을 이용하실 수 있습니다!", false));
+        return dto;
     }
 
     @Override
@@ -37,7 +45,7 @@ public class MessageViewsImpl implements MessageViews{
     }
 
     @Override
-    public MessageDto generateAuthorizeFailureEmail() {
+    public MessageDto generateAuthorizeFailureMessage() {
         TitleDto title = new TitleDto("인증메일이 전송중 문제가 발생하였습니다!");
         String description = "관리자에게 문의해주세요!";
         Color color = new Color(32, 205, 55);
@@ -45,11 +53,6 @@ public class MessageViewsImpl implements MessageViews{
         FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, description, color, author, footer);
-    }
-
-    @Override
-    public MessageDto generateAuthorizedEmail() {
-        return null;
     }
 
     @Override
@@ -125,6 +128,17 @@ public class MessageViewsImpl implements MessageViews{
     public MessageDto generateAlreadyVoteMessage() {
         TitleDto title = new TitleDto("이미 해당 투표에 참여하셧습니다!");
         String description = "기존 투표이모지를 취소하고 시도해주세요!";
+        Color color = new Color(217, 17, 62);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        return new MessageDto(title, description, color, author, footer);
+    }
+
+    @Override
+    public MessageDto generateTipticMessage(String message) {
+        TitleDto title = new TitleDto("이거 아셧나요?");
+        String description = message;
         Color color = new Color(217, 17, 62);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
         FooterDto footer = new FooterDto("", "");

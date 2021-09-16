@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,29 +26,20 @@ public class VoteListener extends ListenerAdapter {
     private final MessageViews messageViews;
 
     @Override
-    public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
-        log.info("테스트0");
-    }
-
-    @Override
     public void onGuildMessageReactionAdd(@NotNull GuildMessageReactionAddEvent event) {
-        log.info("테스트1");
         if(passed(event)) return;
 
-        System.out.println("테스트2");
         UserDto voter = userService.getUser(event.getUser());
         Message voteMessage = event.retrieveMessage().complete();
 
-        System.out.println("테스트3");
         if(checkIsAlreadyVote(voteMessage, voter)) {
-            System.out.println("테스트5");
             cancelEvent(event);
             sendAlreadyVoteMessage(event);
         }
     }
 
     private boolean passed(GuildMessageReactionAddEvent event) {
-        if(event.retrieveUser().complete().isBot()) return true; //유저가 봇이면 패스
+        if(event.retrieveUser().complete().isBot()) return true; //유저가 아니라 봇이면 패스
         if(event.getChannel().getIdLong() != botProperty.getVoteChannel()) return true; //투표 채널이 아니면 패스
         return !voteService.isVoteMessage(event.getMessageIdLong());
     }
@@ -70,7 +60,6 @@ public class VoteListener extends ListenerAdapter {
     }
 
     private boolean checkIsAlreadyVote(Message message, UserDto user) {
-        System.out.println("테스트4");
         //추가된 이모지까지 합산해서 체크하므로, vote이모지가 2개 이상이 되어야지 중복투표가 된다
         long voteCount = message.getReactions().stream().filter(reaction ->
                 VoteEmoji.isVoteEmoji(reaction) && isReactor(reaction, user.getDiscordId())).count();

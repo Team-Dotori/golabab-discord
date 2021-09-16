@@ -4,7 +4,7 @@ import com.dotori.golababdiscord.domain.api.dto.RequestDayVoteResultDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Service("dummy-vote-api-service")
+//@Service("dummy-vote-api-service")
 @Slf4j
 public class DummyVoteApiService implements VoteApiService{
     @Override

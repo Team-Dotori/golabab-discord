@@ -10,13 +10,13 @@ public interface MessageViews {
     MessageDto generateRequestAuthorizeMessage();
     MessageDto generateRequestSchoolEmailMessage();
     MessageDto generateMailSentMessage(DomainValidatedUserDto domainValidatedUser);
-    MessageDto generateAuthorizeFailureEmail();
-    MessageDto generateAuthorizedEmail();
+    MessageDto generateAuthorizeFailureMessage();
     MessageDto generateAuthorizeFailureMessage(FailureReason alreadyEnrolled);
     MessageDto generateAuthorizedMessage();
     //Vote
     MessageDto generateVoteOpenedMessage(VoteDto vote);
     MessageDto generateVoteClosedMessage();
     MessageDto generateAlreadyVoteMessage();
-
+    //Tiptic
+    MessageDto generateTipticMessage(String message);
 }
