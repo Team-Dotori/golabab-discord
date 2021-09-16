@@ -32,7 +32,7 @@ public class AuthorizeCommand extends LeafCommand {
 
     @Override//소고야 인증 실명 이메일
     protected void run(User user, MessageChannel channel, String args) {
-        if(!checkArgs(args)) throw new WrongArgumentException(args);
+        if(!checkArgs(args)) throw new WrongArgumentException(args, "소고야 인증 `실명` `이메일`");
 
         UnValidatedUserDto unValidatedUser = getUnValidatedUser(user, args);
         DomainValidatedUserDto domainValidatedUser = validateDomain(unValidatedUser, args);
@@ -86,7 +86,7 @@ public class AuthorizeCommand extends LeafCommand {
     private boolean checkArgs(String args) {
         return args != null &&
                 !args.equals("") &&
-                (args.length() >= 2);
+                (args.split(" ").length >= 2);
     }
 
     private String getNameByArgs(String args) {

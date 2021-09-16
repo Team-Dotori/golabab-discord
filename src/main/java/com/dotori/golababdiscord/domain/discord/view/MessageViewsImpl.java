@@ -3,6 +3,7 @@ package com.dotori.golababdiscord.domain.discord.view;
 import com.dotori.golababdiscord.domain.authorize.dto.DomainValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.enum_type.FailureReason;
 import com.dotori.golababdiscord.domain.discord.dto.*;
+import com.dotori.golababdiscord.domain.discord.enum_type.WrongCommandUsageType;
 import com.dotori.golababdiscord.domain.discord.exception.UnknownFailureReasonException;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
 import com.dotori.golababdiscord.domain.vote.enum_type.VoteEmoji;
@@ -13,10 +14,34 @@ import java.awt.*;
 
 @Component
 public class MessageViewsImpl implements MessageViews{
+
+    @Override
+    public MessageDto generateWrongCommandUsageMessage(WrongCommandUsageType usageType, String args, String usage) {
+        TitleDto title = new TitleDto("올바른 명령어 사용법이 아닙니다!", "");
+        Color color = new Color(32, 205, 55);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("");
+
+        MessageDto dto = new MessageDto(title, args, color, author, footer);
+        dto.addSection(new SectionDto("어떻게 사용해야할까요?", MarkdownUtil.codeblock(usage), false));
+        return dto;
+    }
+
+    @Override
+    public MessageDto generateArgumentNotFoundMessage() {
+        TitleDto title = new TitleDto("명령어를 찾을 수 없습니다!", "");
+        String description = "올바른 명령어를 입력해주세요!";
+        Color color = new Color(32, 205, 55);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("");
+
+        return new MessageDto(title, description, color, author, footer);
+    }
+
     @Override
     public MessageDto generateRequestAuthorizeMessage() {
         TitleDto title = new TitleDto("SW마이스터 고등학교 재학생이신가요?", "https://mail.google.com/mail");
-        String description = "\"소고야 인증\" 명령어를 통해 여러분이 SW마이스터고 재학생임을 인증해주세요!";
+        String description = "소고야 인증 `이름` `이메일` 명령어를 통해 여러분이 SW마이스터고 재학생임을 인증해주세요!";
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
         FooterDto footer = new FooterDto("");
@@ -58,16 +83,23 @@ public class MessageViewsImpl implements MessageViews{
     @Override
     public MessageDto generateAuthorizeFailureMessage(FailureReason reason) {
         MessageDto dto;
+        Color color = new Color(217, 17, 62);
         switch (reason) {
             case ALREADY_ENROLLED:
                 TitleDto title = new TitleDto("이미 인증된 이메일입니다!");
                 String description = "이미 해당 계정으로 인증된 유저가 있습니다";
-                Color color = new Color(32, 205, 55);
                 AuthorDto author = new AuthorDto("Dotori 전공동아리");
                 FooterDto footer = new FooterDto("");
                 dto = new MessageDto(title, description, color, author, footer);
                 String checklist = getChecklist();
                 dto.addSection(new SectionDto("다음중 하나를 확인해주세요", checklist, false));
+                break;
+            case DOMAIN_IS_NOT_SCHOOL_DOMAIN:
+                title = new TitleDto("학교 이메일이 아닙니다!");
+                description = "학교에서 발급한 이메일로 다시시도해주세요!";
+                author = new AuthorDto("Dotori 전공동아리");
+                footer = new FooterDto("");
+                dto = new MessageDto(title, description, color, author, footer);
                 break;
             default:
                 throw new UnknownFailureReasonException(reason);

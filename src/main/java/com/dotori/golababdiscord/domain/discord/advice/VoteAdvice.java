@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEve
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,9 +31,16 @@ public class VoteAdvice {
             ReceiverDto receiver = new ReceiverDto(channel);
             MessageDto message = messageViews.generateRequestAuthorizeMessage();
 
+            cancelEvent(event);
             messageSenderService.sendMessage(receiver, message);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
+    }
+
+    private void cancelEvent(@NotNull GuildMessageReactionAddEvent event) {
+        event.getReaction().removeReaction(
+                event.retrieveUser().complete()
+        ).complete();
     }
 }

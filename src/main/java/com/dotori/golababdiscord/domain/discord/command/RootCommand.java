@@ -11,7 +11,7 @@ public class RootCommand extends Command{
 
     @Override
     protected void run(User user, MessageChannel channel, String args) {
-        throw new WrongArgumentException(args);
+        throw new WrongArgumentException(args, "존재하지 않는 명령어입니다!");
     }
 
     @Override

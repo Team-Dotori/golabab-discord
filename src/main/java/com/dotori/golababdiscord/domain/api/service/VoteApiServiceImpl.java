@@ -13,6 +13,6 @@ public class VoteApiServiceImpl implements VoteApiService{
 
     @Override
     public void collectTotalVoteAtDay(RequestDayVoteResultDto result) {
-        apiService.post(apiProperty.getBaseUrl() + ":" +  apiProperty.getPort() + "/api/v1/tiptic/collect-total-vote-at-day", result, RequestDayVoteResultDto.class);
+        apiService.post(apiProperty.getBaseUrl() + ":" +  apiProperty.getPort() + "/api/v1/vote/collect-total-vote-at-day", result, RequestDayVoteResultDto.class);
     }
 }
