@@ -1,9 +1,7 @@
 package com.dotori.golababdiscord.domain.vote.scheduler;
 
 import com.dotori.golababdiscord.domain.vote.dto.*;
-import com.dotori.golababdiscord.domain.vote.entity.InProgressVote;
 import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
-import com.dotori.golababdiscord.global.exception.DateParseFailureException;
 import com.dotori.golababdiscord.domain.vote.service.VoteService;
 import com.dotori.golababdiscord.global.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -39,14 +35,6 @@ public class VoteSchedulerImpl implements VoteScheduler{
         voteService.sendVoteResult(result);
     }
     private InProgressVoteGroupDto createInProgressVoteGroupByDay(Date today) {
-        //TODO 금요일처럼 특정 투표가 진행되지 않았을경우
-        InProgressVoteDto breakfast =
-                voteService.getInProgressVote(today, MealType.BREAKFAST);
-        InProgressVoteDto lunch =
-                voteService.getInProgressVote(today, MealType.LUNCH);
-        InProgressVoteDto dinner =
-                voteService.getInProgressVote(today, MealType.DINNER);
-        ;
         return new InProgressVoteGroupDto(voteService.getInProgressVotes(today)/*breakfast, lunch, dinner*/);
     }
 
@@ -81,12 +69,4 @@ public class VoteSchedulerImpl implements VoteScheduler{
 
         saveInpProgressVote(dinner);
     }
-    /*
-    @Scheduled(cron="20 * * * * *")
-    public void openTestVote() {
-        VoteDto dinnerVote = voteService.createNewVote(MealType.DINNER);
-        InProgressVoteDto dinner = voteService.openVote(dinnerVote);
-
-        saveInpProgressVote(dinner);
-    }*/
 }

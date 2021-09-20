@@ -29,15 +29,15 @@ public class CommandAdvice {
         try {
             pjp.proceed();
         } catch (WrongArgumentException e) {
-            event.getChannel().sendMessage("알수없는 인자 : \"" + e.getArgs().split(" ")[0] + "\"").complete();
             ReceiverDto receiver = new ReceiverDto(event.getChannel());
             MessageDto message = messageViews.generateWrongCommandUsageMessage(WrongCommandUsageType.WRONG_ARGUMENT, e.getArgs(), e.getUsage());
-            sendBadRequestMessage();
+
+            messageSenderService.sendMessage(receiver, message);
         } catch (ArgumentNotFoundException e) {
-            event.getChannel().sendMessage("인자가 존재하지 않음").complete();
             ReceiverDto receiver = new ReceiverDto(event.getChannel());
             MessageDto message = messageViews.generateArgumentNotFoundMessage();
-            sendBadRequestMessage();
+
+            messageSenderService.sendMessage(receiver, message);
         } catch (DepartmentNotFoundException e) {
             ReceiverDto receiver = new ReceiverDto(event.getChannel());
             MessageDto message = messageViews.generateAuthorizeFailureMessage(FailureReason.DOMAIN_IS_NOT_SCHOOL_DOMAIN);
@@ -46,9 +46,5 @@ public class CommandAdvice {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
-    }
-
-    //TODO view 사용해서구현하기
-    private void sendBadRequestMessage() {
     }
 }

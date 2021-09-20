@@ -5,8 +5,6 @@ import com.dotori.golababdiscord.domain.api.dto.ResponseMealMenuDto;
 import com.dotori.golababdiscord.domain.api.service.LunchApiService;
 import com.dotori.golababdiscord.domain.api.service.VoteApiService;
 import com.dotori.golababdiscord.domain.discord.SogoBot;
-import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
-import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
 import com.dotori.golababdiscord.domain.vote.dto.*;
@@ -18,29 +16,24 @@ import com.dotori.golababdiscord.domain.vote.repository.InProgressVoteRepository
 import com.dotori.golababdiscord.domain.vote.repository.MenuRepository;
 import com.dotori.golababdiscord.global.utils.DateUtils;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-@Service
-public class VoteServiceImpl implements VoteService{
+public abstract class VoteServiceImpl implements VoteService{
     private final LunchApiService lunchApiService;
     private final VoteApiService voteApiService;
-    private final MessageSenderService messageSenderService;
-    private final MessageViews messageViews;
+    protected final MessageSenderService messageSenderService;
+    protected final MessageViews messageViews;
     private final InProgressVoteRepository inProgressVoteRepository;
     private final MenuRepository menuRepository;
     private final DateUtils dateUtils;
-    private final SogoBot sogoBot;
+    protected final SogoBot sogoBot;
 
-    @Lazy
     public VoteServiceImpl(LunchApiService lunchApiService,
                            VoteApiService voteApiService,
                            MessageSenderService messageSenderService,
@@ -70,48 +63,13 @@ public class VoteServiceImpl implements VoteService{
         Long messageId = sendVoteMessageAndGetId(vote);
         return vote.inProgress(messageId);
     }
-    private Long sendVoteMessageAndGetId(VoteDto vote) {
-        TextChannel channel = sogoBot.getVoteChannel();
-
-        MessageDto message = messageViews.generateVoteOpenedMessage(vote);
-        ReceiverDto receiver = new ReceiverDto(channel);
-
-        return messageSenderService.sendMessage(receiver, message);
-    }
+    protected abstract Long sendVoteMessageAndGetId(VoteDto vote);
 
     @Override
     public VoteResultGroupDto calculateVoteResult(InProgressVoteGroupDto dto) {
         VoteResultGroupDto result = new VoteResultGroupDto();
         dto.getVotes().forEach(vote -> result.put(vote.getMeal(), calculateMealVoteResult(vote)));
-        //MealType {MenuName, NumOfVote}
-
-
-//        AtomicReference<VoteResultGroupDto> group = new AtomicReference<>();
-//
-//        calculateResultAtGroup(inProgressVoteGroup, group);
         return result;
-    }
-
-    private void calculateResultAtGroup(List<InProgressVoteDto> inProgressVoteGroup,
-                                        AtomicReference<VoteResultGroupDto> group) {
-
-
-        // inProgressVoteGroup.forEach(vote -> {
-        //            VoteResultDto breakfast = new VoteResultDto();
-        //            VoteResultDto lunch = new VoteResultDto();
-        //            VoteResultDto dinner = new VoteResultDto();
-        //
-        //            switch (vote.getMeal()) {
-        //                case BREAKFAST: breakfast = calculateMealVoteResult(vote);
-        //                    break;
-        //                case LUNCH: lunch = calculateMealVoteResult(vote);
-        //                    break;
-        //                case DINNER: dinner = calculateMealVoteResult(vote);
-        //                    break;
-        //            }
-        //
-        //            group.set(new VoteResultGroupDto(breakfast, lunch, dinner));
-        //        });
     }
 
     private VoteResultDto calculateMealVoteResult(InProgressVoteDto dto) {

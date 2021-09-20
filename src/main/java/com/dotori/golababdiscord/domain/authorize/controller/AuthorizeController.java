@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller
+//@Controller
 @RequiredArgsConstructor
-public class AuthorizeController {
-    private final AuthorizeService authorizeService;
-    private final EnrollService enrollService;
-    private final MessageSenderService messageSenderService;
-    private final MessageViews messageViews;
-    private final SogoBot sogoBot;
+public abstract class AuthorizeController {
+    protected final AuthorizeService authorizeService;
+    protected final EnrollService enrollService;
+    protected final SogoBot sogoBot;
 
     @RequestMapping("/authorize")
     public String authorize(@RequestParam String token) {
@@ -36,18 +34,10 @@ public class AuthorizeController {
         return "authorize/authorized";
     }
 
-    private void sendAuthorizedMessage(Long discordId) {
-        MessageChannel channel = sogoBot.getPrivateChannelByUserId(discordId);
-        messageSenderService.sendMessage(new ReceiverDto(channel),
-                messageViews.generateAuthorizedMessage());
-    }
+    abstract protected void sendAuthorizedMessage(Long discordId);
 
     @ExceptionHandler(AlreadyEnrolledException.class)
     public String handleAlreadyEnrolledException(AlreadyEnrolledException e) {
-        Long discordId = e.getUser().getDiscordId();
-        MessageChannel channel = sogoBot.getPrivateChannelByUserId(discordId);
-        messageSenderService.sendMessage(new ReceiverDto(channel),
-                messageViews.generateAuthorizeFailureMessage(FailureReason.ALREADY_ENROLLED));
         return "enroll/error/already-enrolled";
     }
 }

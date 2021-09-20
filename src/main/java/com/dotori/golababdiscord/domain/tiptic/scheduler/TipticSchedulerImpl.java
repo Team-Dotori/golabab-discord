@@ -12,16 +12,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
-@Component
+//@Component
 @RequiredArgsConstructor
-public class TipticSchedulerImpl implements TipticScheduler{
+public abstract class TipticSchedulerImpl implements TipticScheduler{
     private final TipticApiService tipticApiService;
-    private final MessageSenderService messageSenderService;
-    private final MessageViews messageViews;
-    private final SogoBot sogoBot;
     private static final int percentage = 30;
 
-    @Override @Scheduled(cron = "0 0  12 * * *") //매일 12시마다 팁틱 게시
+    @Override @Scheduled(cron = "0/5 * * * * *") //매일 12시마다 팁틱 게시
     public void trySendTipticMessage() {
         if((random100()) < percentage) sendTipticMessage();
     }
@@ -32,10 +29,8 @@ public class TipticSchedulerImpl implements TipticScheduler{
 
     private void sendTipticMessage() {
         String tiptic = tipticApiService.getImproveMessage();
-
-        ReceiverDto receiver = new ReceiverDto(sogoBot.getVoteChannel());
-        MessageDto message = messageViews.generateTipticMessage(tiptic);
-
-        messageSenderService.sendMessage(receiver, message);
+        sendTiptic(tiptic);
     }
+
+    protected abstract void sendTiptic(String tiptic);
 }
