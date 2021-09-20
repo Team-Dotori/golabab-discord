@@ -4,6 +4,7 @@ import com.dotori.golababdiscord.domain.vote.dto.*;
 import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
 
 import java.util.Date;
+import java.util.List;
 
 public interface VoteService {
     VoteDto createNewVote(MealType meal);
@@ -14,4 +15,5 @@ public interface VoteService {
     void save(InProgressVoteDto inProgressVote);
     InProgressVoteDto getInProgressVote(Date to, MealType breakfast);
     boolean isVoteMessage(long messageIdLong);
+    List<InProgressVoteDto> getInProgressVotes(Date today);
 }

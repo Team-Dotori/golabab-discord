@@ -1,6 +1,5 @@
 package com.dotori.golababdiscord.domain.discord;
 
-import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.exception.BotBuildingFailureException;
 import com.dotori.golababdiscord.domain.discord.exception.UserNotFoundException;
 import com.dotori.golababdiscord.domain.discord.exception.VoteChannelNotFoundException;

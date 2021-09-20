@@ -21,7 +21,7 @@ public class TipticSchedulerImpl implements TipticScheduler{
     private final SogoBot sogoBot;
     private static final int percentage = 30;
 
-    @Override @Scheduled(cron = "0/10 * * * * *")
+    @Override @Scheduled(cron = "0 0  12 * * *") //매일 12시마다 팁틱 게시
     public void trySendTipticMessage() {
         if((random100()) < percentage) sendTipticMessage();
     }

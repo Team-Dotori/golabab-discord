@@ -1,9 +1,6 @@
 package com.dotori.golababdiscord.domain.vote.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,4 +13,9 @@ public class Menu {
     private long idx;
     private String menuName;
     private long voteMessageId;
+
+    public Menu(String menuName, long voteMessageId) {
+        this.menuName = menuName;
+        this.voteMessageId = voteMessageId;
+    }
 }

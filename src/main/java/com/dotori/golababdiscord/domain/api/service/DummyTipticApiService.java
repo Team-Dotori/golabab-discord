@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-//@Service
+@Service
 public class DummyTipticApiService implements TipticApiService{
     List<String> improveMessages;
 
