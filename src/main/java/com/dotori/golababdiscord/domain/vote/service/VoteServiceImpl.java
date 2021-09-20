@@ -1,7 +1,6 @@
 package com.dotori.golababdiscord.domain.vote.service;
 
 import com.dotori.golababdiscord.domain.api.dto.RequestDayVoteResultDto;
-import com.dotori.golababdiscord.domain.api.dto.RequestMealVoteResultDto;
 import com.dotori.golababdiscord.domain.api.dto.ResponseMealMenuDto;
 import com.dotori.golababdiscord.domain.api.service.LunchApiService;
 import com.dotori.golababdiscord.domain.api.service.VoteApiService;
@@ -17,17 +16,17 @@ import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
 import com.dotori.golababdiscord.domain.vote.enum_type.VoteEmoji;
 import com.dotori.golababdiscord.domain.vote.repository.InProgressVoteRepository;
 import com.dotori.golababdiscord.domain.vote.repository.MenuRepository;
-import com.dotori.golababdiscord.global.exception.DateParseFailureException;
+import com.dotori.golababdiscord.global.utils.DateUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,33 +37,32 @@ public class VoteServiceImpl implements VoteService{
     private final MessageViews messageViews;
     private final InProgressVoteRepository inProgressVoteRepository;
     private final MenuRepository menuRepository;
+    private final DateUtils dateUtils;
     private final SogoBot sogoBot;
 
     @Lazy
-    public VoteServiceImpl(LunchApiService lunchApiService, VoteApiService voteApiService, MessageSenderService messageSenderService, MessageViews messageViews, InProgressVoteRepository inProgressVoteRepository, MenuRepository menuRepository, SogoBot sogoBot) {
+    public VoteServiceImpl(LunchApiService lunchApiService,
+                           VoteApiService voteApiService,
+                           MessageSenderService messageSenderService,
+                           MessageViews messageViews,
+                           InProgressVoteRepository inProgressVoteRepository,
+                           MenuRepository menuRepository,
+                           DateUtils dateUtils, SogoBot sogoBot) {
         this.lunchApiService = lunchApiService;
         this.voteApiService = voteApiService;
         this.messageSenderService = messageSenderService;
         this.messageViews = messageViews;
         this.inProgressVoteRepository = inProgressVoteRepository;
         this.menuRepository = menuRepository;
+        this.dateUtils = dateUtils;
         this.sogoBot = sogoBot;
     }
 
     @Override
     public VoteDto createNewVote(MealType meal) {
+        Date today = dateUtils.getToday();
         ResponseMealMenuDto menus = lunchApiService.getMealToday(meal);
-        return new VoteDto(now(), meal, menus);
-    }
-    private Date now() {
-        Date from = new Date();
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = transFormat.format(from);
-        try {
-            return transFormat.parse(date);
-        } catch (ParseException e) {
-            throw new DateParseFailureException();
-        }
+        return new VoteDto(today, meal, menus);
     }
 
     @Override
@@ -83,85 +81,121 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public VoteResultGroupDto calculateVoteResult(InProgressVoteGroupDto dto) {
-        VoteResultDto breakfast = new VoteResultDto();
-        VoteResultDto lunch = new VoteResultDto();
-        VoteResultDto dinner = new VoteResultDto();
+        VoteResultGroupDto result = new VoteResultGroupDto();
+        dto.getVotes().forEach(vote -> result.put(vote.getMeal(), calculateMealVoteResult(vote)));
+        //MealType {MenuName, NumOfVote}
 
-        calculateMealVoteResult(dto.getBreakfast(), breakfast);
-        calculateMealVoteResult(dto.getLunch(), lunch);
-        calculateMealVoteResult(dto.getDinner(), dinner);
 
-        return new VoteResultGroupDto(breakfast, lunch, dinner);
+//        AtomicReference<VoteResultGroupDto> group = new AtomicReference<>();
+//
+//        calculateResultAtGroup(inProgressVoteGroup, group);
+        return result;
     }
-    private void calculateMealVoteResult(InProgressVoteMemberDto dto, VoteResultDto result) {
+
+    private void calculateResultAtGroup(List<InProgressVoteDto> inProgressVoteGroup,
+                                        AtomicReference<VoteResultGroupDto> group) {
+
+
+        // inProgressVoteGroup.forEach(vote -> {
+        //            VoteResultDto breakfast = new VoteResultDto();
+        //            VoteResultDto lunch = new VoteResultDto();
+        //            VoteResultDto dinner = new VoteResultDto();
+        //
+        //            switch (vote.getMeal()) {
+        //                case BREAKFAST: breakfast = calculateMealVoteResult(vote);
+        //                    break;
+        //                case LUNCH: lunch = calculateMealVoteResult(vote);
+        //                    break;
+        //                case DINNER: dinner = calculateMealVoteResult(vote);
+        //                    break;
+        //            }
+        //
+        //            group.set(new VoteResultGroupDto(breakfast, lunch, dinner));
+        //        });
+    }
+
+    private VoteResultDto calculateMealVoteResult(InProgressVoteDto dto) {
+        VoteResultDto result = new VoteResultDto();
         Message message = sogoBot.getMessageById(dto.getVoteMessageId());
-            message.getReactions().forEach(reaction -> { //모든 종류의 반응을 불러와 reaction 에 하나씩 담는다
-                for (VoteEmoji emoji : VoteEmoji.values()) {  //모든 종류의 VoteEmoji 를 불러와 emoji 에 하나씩 담는다
-                    if(reaction.getReactionEmote().getName().equals(emoji.getEmoji())) {  //reaction 이 vote emoji 인지 검사한다
+
+        message.getReactions().forEach(reaction -> { //모든 종류의 반응을 불러와 reaction 에 하나씩 담는다
+            Arrays.stream(VoteEmoji.values())
+                    .filter(emoji -> reaction.getReactionEmote().getName().equals(emoji.getEmoji()))//reaction 중 vote emoji 만 가져온다
+                    .forEach(emoji -> {
                         String menuName = dto.getMenus().get(emoji.getId()); //메뉴 이름을 구한다
                         Integer numOfVote = reaction.getCount() - 1; //bot 이 단 이모지 제외
-
                         result.put(menuName, numOfVote);
-                    }
-                }
-            });
+                    });
+        });
+        return result;
     }
 
     @Override
     public void closeVote(InProgressVoteGroupDto vote) {
-        close(vote.getBreakfast());
-        close(vote.getLunch());
-        close(vote.getDinner());
+        vote.getVotes().forEach(this::close);
     }
-    private void close(InProgressVoteMemberDto dto) {
-        Message message = sogoBot.getMessageById(dto.getVoteMessageId());
+    private void close(InProgressVoteDto dto) {
+        Long messageId = dto.getVoteMessageId();
+        Message message = sogoBot.getMessageById(messageId);
+
         messageSenderService.clearReactions(message);
         messageSenderService.editMessageToClose(message, messageViews.generateVoteClosedMessage());
     }
 
     @Override
     public void sendVoteResult(VoteResultGroupDto result) {
-        RequestMealVoteResultDto breakfast = new RequestMealVoteResultDto(result.getBreakfast());
-        RequestMealVoteResultDto lunch = new RequestMealVoteResultDto(result.getLunch());
-        RequestMealVoteResultDto dinner = new RequestMealVoteResultDto(result.getDinner());
-
-        RequestDayVoteResultDto requestDto = new RequestDayVoteResultDto(breakfast, lunch, dinner);
+        RequestDayVoteResultDto requestDto = new RequestDayVoteResultDto(result);
         voteApiService.collectTotalVoteAtDay(requestDto);
     }
 
     @Override @Transactional
-    public void save(InProgressVoteDto inProgressVote) {
-        inProgressVoteRepository.save(new InProgressVote(
-                inProgressVote.getVoteMessageId(),
-                inProgressVote.getVoteDate(),
-                inProgressVote.getMeal()));
-        inProgressVote.getMenus().forEach(
+    public void save(InProgressVoteDto dto) {
+        //convert dto to entity
+        InProgressVote entity = new InProgressVote(
+                dto.getVoteMessageId(),
+                dto.getVoteDate(),
+                dto.getMeal());
+
+        //save InProgressVote in in_progress_vote schema
+        inProgressVoteRepository.save(entity);
+        //save menus in menu schema
+        dto.getMenus().forEach(
                 menuStr -> {
-                    Menu menu = new Menu();
-                    menu.setMenuName(menuStr);
-                    menu.setVoteMessageId(inProgressVote.getVoteMessageId());
+                    Menu menu = new Menu(menuStr, dto.getVoteMessageId());
                     menuRepository.save(menu);
                 }
         );
     }
 
     @Override
-    public InProgressVoteDto getInProgressVote(Date to, MealType meal) {
-        InProgressVote vote = inProgressVoteRepository.getByVoteDateAndMeal(to, meal);
-        List<String> menus = getMenusByEntity(vote);
+    public InProgressVoteDto getInProgressVote(Date today, MealType meal) {
+        //date 와 meal 로 InProgressVote entity 를 받는다
+        InProgressVote vote = inProgressVoteRepository.getByVoteDateAndMeal(today, meal);
+        if(vote == null) return null; //TODO throw new InProgressVoteNotFoundException();
+        List<String> menus = getMenusByEntity(vote); //TODO 양방향 매핑 사용해보기
 
         return new InProgressVoteDto(vote.getVoteDate(), vote.getMeal(), menus, vote.getVoteMessageId());
     }
-
-    @Override
-    public boolean isVoteMessage(long messageIdLong) {
-        return inProgressVoteRepository.existsByVoteMessageId(messageIdLong);
-    }
-
     private List<String> getMenusByEntity(InProgressVote vote) {
+        //vote message id 를 통해 해당 투표에 명시된 모든 메뉴들을 불러온다 (양방향 매핑을 통해 repository
         List<Menu> menus = menuRepository.getAllByVoteMessageId(vote.getVoteMessageId());
         return menus.stream()
                 .map(Menu::getMenuName)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isVoteMessage(long messageIdLong) {
+        //받은 message id 가 in_progress_vote 스키마에 명시되어있는지 확인한다
+        return inProgressVoteRepository.existsByVoteMessageId(messageIdLong);
+    }
+
+    @Override
+    public List<InProgressVoteDto> getInProgressVotes(Date today) {
+        return Arrays.stream(MealType.values())
+                .filter(meal -> getInProgressVote(today, meal) != null)
+                .map(meal -> getInProgressVote(today, meal))
+                .collect(Collectors.toList());
+
     }
 }

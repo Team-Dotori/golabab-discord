@@ -34,9 +34,9 @@ jwt:
   secret: secretsogo
   issuer: sogobot
 bot:
-  token: ODgxODU4OTIwODYyMzM5MTQy.YSy9Hg.Waxi1BiDshTfRzgXwQOhZDAr1mk
+  token: ODgxODU4OTIwODYyMzM5MTQy.YSy9Hg.kRDVkpL2MoE0MYxKnCJ_oqNMOfU
   command-prefix: 소고야
-  vote-channel: 887960422131572766
+  vote-channel: 888743687176212540
 vote-api:
   base-url: http://127.0.0.1
   port: 8080
