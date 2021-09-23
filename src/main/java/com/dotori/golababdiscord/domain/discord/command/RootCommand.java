@@ -11,24 +11,12 @@ public class RootCommand extends Command{
 
     @Override
     protected void run(User user, MessageChannel channel, String args) {
-        throw new WrongArgumentException(args, "존재하지 않는 명령어입니다!");
+        throw new WrongArgumentException(args, "명령어의 인자를 입력해주세요!");
     }
 
-    @Override
-    public void execute(User user, MessageChannel channel, String args) {
-        String prefix = getRootInputPrefix(args);
-        String childArgs = encodeRootArgsByInput(args);
-        if(commandTrigger.checkTrigger(prefix)) {
-            super.execute(user, channel, childArgs);
-        }
-    }
-
-    private String encodeRootArgsByInput(String args) {
-        if(!args.contains(" ")) return "";
-        return args.substring(args.indexOf(" ") + 1);
-    }
-
-    private String getRootInputPrefix(String args) {
-        return args.split(" ")[0];
+    public boolean execute(String prefix, User user, MessageChannel channel, String args) {
+        boolean isCommand = commandTrigger.checkTrigger(prefix);
+        if(isCommand) execute(user, channel, args);
+        return isCommand;
     }
 }

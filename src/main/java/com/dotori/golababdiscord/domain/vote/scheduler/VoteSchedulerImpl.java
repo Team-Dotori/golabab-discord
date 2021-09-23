@@ -21,7 +21,7 @@ public class VoteSchedulerImpl implements VoteScheduler{
     private static final String BREAKFAST_VOTE_CRON = "0 " + 20 + " " + 8 + " * * MON-FRI"; //오전 8시 20분
     private static final String LUNCH_VOTE_CRON = "0 " + 20 + " " + 13 + " * * MON-FRI"; //오후 1시 20분
     private static final String DINNER_VOTE_CRON = "0 " + 20 + " " + 19 + " * * MON-FRI"; //오후 7시 20분
-    private static final String COLLECT_VOTE_CRON = "0 " + 0 + " " + 11 + " * * MON-FRI"; //오후 11시 00분
+    private static final String COLLECT_VOTE_CRON = "0 " + 0 + " " + 20 + " * * MON-FRI"; //오후 8시 00분
 
     @Override
     @Scheduled(cron=COLLECT_VOTE_CRON)
@@ -47,8 +47,6 @@ public class VoteSchedulerImpl implements VoteScheduler{
         saveInpProgressVote(breakfast);
     }
     private void saveInpProgressVote(InProgressVoteDto inProgressVote) {
-        log.info(inProgressVote.getMeal() + "\n아이디 : " + inProgressVote.getVoteMessageId() + "\n메뉴 : " +
-                Arrays.toString(inProgressVote.getMenus().toArray()));
         voteService.save(inProgressVote);
     }
 

@@ -14,7 +14,6 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     @Override
     public UserDto getUser(User user) {
-        System.out.println(user.getIdLong());
         com.dotori.golababdiscord.global.entity.User entity = userRepository.getById(user.getIdLong());
         if(entity == null) throw new UserNotEnrolledException();
         return new UserDto(entity.getId(), entity.getName(), entity.getEmail(), DepartmentType.of(entity.getDepartmentType()));

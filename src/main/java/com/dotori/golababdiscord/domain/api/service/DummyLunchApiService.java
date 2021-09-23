@@ -32,10 +32,10 @@ public class DummyLunchApiService implements LunchApiService{
         lunch.add("수제블루베리요거트");
         lunch.add("수제치킨/파채발사믹드레싱");
         ResponseMealMenuDto dinner = new ResponseMealMenuDto();
-        //dinner.add("돈민지달걀볶음밥");
-        //dinner.add("김치라면");
-        //dinner.add("단무지쪽파무침");
-        //dinner.add("모듬떡볶이김말이튀김");
+        dinner.add("돈민지달걀볶음밥");
+        dinner.add("김치라면");
+        dinner.add("단무지쪽파무침");
+        dinner.add("모듬떡볶이김말이튀김");
 
         return new ResponseDayMenuDto(breakfast, lunch, dinner);
     }

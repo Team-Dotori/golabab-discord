@@ -63,7 +63,6 @@ public class VoteListener extends ListenerAdapter {
         //추가된 이모지까지 합산해서 체크하므로, vote이모지가 2개 이상이 되어야지 중복투표가 된다
         long voteCount = message.getReactions().stream().filter(reaction ->
                 VoteEmoji.isVoteEmoji(reaction) && isReactor(reaction, user.getDiscordId())).count();
-        System.out.println("voteCount = " + voteCount);
         return voteCount > 1;
     }
 

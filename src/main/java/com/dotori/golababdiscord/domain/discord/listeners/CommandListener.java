@@ -12,6 +12,18 @@ public class CommandListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if(event.getAuthor().isBot()) return;
-        rootCommand.execute(event.getAuthor(), event.getChannel(), event.getMessage().getContentRaw());
+        String args = event.getMessage().getContentRaw();
+        String prefix = getRootInputPrefix(args);
+        String childArgs = encodeRootArgsByInput(args);
+        rootCommand.execute(prefix, event.getAuthor(), event.getChannel(), childArgs);
+    }
+
+    private String encodeRootArgsByInput(String args) {
+        if(!args.contains(" ")) return "";
+        return args.substring(args.indexOf(" ") + 1);
+    }
+
+    private String getRootInputPrefix(String args) {
+        return args.split(" ")[0];
     }
 }

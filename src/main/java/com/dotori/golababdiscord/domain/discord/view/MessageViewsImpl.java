@@ -131,7 +131,7 @@ public class MessageViewsImpl implements MessageViews{
     @Override
     public MessageDto generateVoteOpenedMessage(VoteDto vote) {
         TitleDto title = new TitleDto(String.format("오늘%s 어떠셧나요?", vote.getMeal().getKorean()));
-        String description = "더욱 퀄리티높은 급식을 위해 가장 맛있었던 메뉴에 투표해주세요!";
+        String description = "더욱 퀄리티 높은 급식을 위해 가장 맛있었던 메뉴에 투표해주세요!";
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
         FooterDto footer = new FooterDto("", "");
