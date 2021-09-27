@@ -9,4 +9,5 @@ public interface RoleService {
     Role getRole(RoleDto dto);
 
     void grantRole(UserDto userDto, RoleDto roleDto);
+    void removeRole(UserDto userDto, RoleDto role);
 }

@@ -22,8 +22,15 @@ public class PermissionGrantSchedulerImpl implements PermissionGrantScheduler{
     public void grant() {
         requireGrantRoleUsers.forEach(userDto -> {
             RoleDto roleDto = userDto.getPermission().getRole();
+            removeLegacyRoles(userDto);
             roleService.grantRole(userDto, roleDto);
         });
+    }
+
+    private void removeLegacyRoles(UserDto userDto) {
+        for (SogoPermission value : SogoPermission.values()) {
+            roleService.removeRole(userDto, value.getRole());
+        }
     }
 
     @Override

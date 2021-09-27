@@ -63,4 +63,15 @@ public class RoleServiceImpl implements RoleService {
 
         officialGuild.addRoleToMember(member, role).complete();
     }
+
+    @Override
+    public void removeRole(UserDto userDto, RoleDto roleDto) {
+        Role role = getRole(roleDto);
+        User user = userService.getUser(userDto);
+
+        Guild officialGuild = sogoBot.getOfficialGuild();
+        Member member = officialGuild.retrieveMember(user).complete();
+
+        officialGuild.removeRoleFromMember(member, role).complete();
+    }
 }
