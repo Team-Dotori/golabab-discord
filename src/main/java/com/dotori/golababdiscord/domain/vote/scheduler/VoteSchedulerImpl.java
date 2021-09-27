@@ -1,9 +1,7 @@
 package com.dotori.golababdiscord.domain.vote.scheduler;
 
 import com.dotori.golababdiscord.domain.vote.dto.*;
-import com.dotori.golababdiscord.domain.vote.entity.InProgressVote;
 import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
-import com.dotori.golababdiscord.global.exception.DateParseFailureException;
 import com.dotori.golababdiscord.domain.vote.service.VoteService;
 import com.dotori.golababdiscord.global.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -25,7 +21,7 @@ public class VoteSchedulerImpl implements VoteScheduler{
     private static final String BREAKFAST_VOTE_CRON = "0 " + 20 + " " + 8 + " * * MON-FRI"; //오전 8시 20분
     private static final String LUNCH_VOTE_CRON = "0 " + 20 + " " + 13 + " * * MON-FRI"; //오후 1시 20분
     private static final String DINNER_VOTE_CRON = "0 " + 20 + " " + 19 + " * * MON-FRI"; //오후 7시 20분
-    private static final String COLLECT_VOTE_CRON = "0 " + 0 + " " + 11 + " * * MON-FRI"; //오후 11시 00분
+    private static final String COLLECT_VOTE_CRON = "0 " + 0 + " " + 23 + " * * MON-FRI"; //오후 11시 00분
 
     @Override
     @Scheduled(cron=COLLECT_VOTE_CRON)
@@ -38,15 +34,7 @@ public class VoteSchedulerImpl implements VoteScheduler{
         voteService.closeVote(group);
         voteService.sendVoteResult(result);
     }
-    private InProgressVoteGroupDto createInProgressVoteGroupByDay(Date today) {
-        //TODO 금요일처럼 특정 투표가 진행되지 않았을경우
-        InProgressVoteDto breakfast =
-                voteService.getInProgressVote(today, MealType.BREAKFAST);
-        InProgressVoteDto lunch =
-                voteService.getInProgressVote(today, MealType.LUNCH);
-        InProgressVoteDto dinner =
-                voteService.getInProgressVote(today, MealType.DINNER);
-        ;
+    private InProgressVoteGroupDto createInProgressVoteGroupByDay(Date today) {        ;
         return new InProgressVoteGroupDto(voteService.getInProgressVotes(today)/*breakfast, lunch, dinner*/);
     }
 

@@ -5,15 +5,21 @@ import com.dotori.golababdiscord.domain.authorize.enum_type.FailureReason;
 import com.dotori.golababdiscord.domain.discord.dto.*;
 import com.dotori.golababdiscord.domain.discord.enum_type.WrongCommandUsageType;
 import com.dotori.golababdiscord.domain.discord.exception.UnknownFailureReasonException;
+import com.dotori.golababdiscord.domain.permission.enum_type.Feature;
+import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
 import com.dotori.golababdiscord.domain.vote.enum_type.VoteEmoji;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.utils.MarkdownUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
 
 @Component
 public class MessageViewsImpl implements MessageViews{
+    @Value("${bot.command-prefix}")
+    private String rootPrefix;
 
     @Override
     public MessageDto generateWrongCommandUsageMessage(WrongCommandUsageType usageType, String args, String usage) {
@@ -40,8 +46,8 @@ public class MessageViewsImpl implements MessageViews{
 
     @Override
     public MessageDto generateRequestAuthorizeMessage() {
-        TitleDto title = new TitleDto("SW마이스터 고등학교 재학생이신가요?", "https://mail.google.com/mail");
-        String description = "소고야 인증 `이름` `이메일` 명령어를 통해 여러분이 SW마이스터고 재학생임을 인증해주세요!";
+        TitleDto title = new TitleDto("SW마이스터 고등학교 재학생이신가요?");
+        String description = rootPrefix + " 인증 <이름> <이메일> 명령어를 통해 여러분이 SW마이스터고 재학생임을 인증해주세요!";
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
         FooterDto footer = new FooterDto("");
@@ -49,11 +55,6 @@ public class MessageViewsImpl implements MessageViews{
         MessageDto dto = new MessageDto(title, description, color, author, footer);
         dto.addSection(new SectionDto("", "인증을 마치셔야 골라밥 투표 및 그외 다양한 서비스들을 이용하실 수 있습니다!", false));
         return dto;
-    }
-
-    @Override
-    public MessageDto generateRequestSchoolEmailMessage() {
-        return null;
     }
 
     @Override
@@ -65,7 +66,7 @@ public class MessageViewsImpl implements MessageViews{
         FooterDto footer = new FooterDto("");
 
         MessageDto dto = new MessageDto(title, description, color, author, footer);
-        dto.addSection(new SectionDto("이메일이 오지 않으셧나요?", "스팸함과 전체보관함을 확인해주세요!", false));
+        dto.addSection(new SectionDto("이메일이 오지 않으셨나요?", "스팸함과 전체보관함을 확인해주세요!", false));
         return dto;
     }
 
@@ -170,8 +171,51 @@ public class MessageViewsImpl implements MessageViews{
     @Override
     public MessageDto generateTipticMessage(String message) {
         TitleDto title = new TitleDto("이거 아셧나요?");
-        String description = message;
         Color color = new Color(217, 17, 62);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        return new MessageDto(title, message, color, author, footer);
+    }
+
+    @Override
+    public MessageDto generatePermissionDeniedMessage(SogoPermission permission, Feature feature) {
+        TitleDto title = new TitleDto("권한이 없습니다!");
+        String description = feature.getDisplay() + "기능을 이용하기 위해선 " + permission.getFirstByFeature(feature).getDisplay() + "이상의 권한이 필요합니다";
+        Color color = new Color(217, 17, 62);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        return new MessageDto(title, description, color, author, footer);
+    }
+
+    @Override
+    public MessageDto generateChannelChangedMessage(User user) {
+        TitleDto title = new TitleDto("투표채널을 성공적으로 변경하였습니다!");
+        String description = user.getAsMention() + "이제 해당 채널에서 투표에 참여하실 수 있습니다!";
+        Color color = new Color(32, 205, 55);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        return new MessageDto(title, description, color, author, footer);
+    }
+
+    @Override
+    public MessageDto generateCheckChannelMessage(User user) {
+        TitleDto title = new TitleDto("여기에요 여기!");
+        String description = String.format("%s님, 여기가 바로 공식 투표채널입니다", user.getAsMention());
+        Color color = new Color(32, 205, 55);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        return new MessageDto(title, description, color, author, footer);
+    }
+
+    @Override
+    public MessageDto generateCheckChannelAlarmMessage() {
+        TitleDto title = new TitleDto("알림을 확인해주세요!");
+        String description = "투표채널에서 이용자님을 멘션하였습니다!";
+        Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
         FooterDto footer = new FooterDto("", "");
 

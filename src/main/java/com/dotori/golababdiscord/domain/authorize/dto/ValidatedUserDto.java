@@ -1,7 +1,8 @@
 package com.dotori.golababdiscord.domain.authorize.dto;
 
 import com.dotori.golababdiscord.domain.authorize.enum_type.DepartmentType;
-import com.dotori.golababdiscord.global.dto.UserDto;
+import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
+import com.dotori.golababdiscord.domain.user.dto.UserDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +15,6 @@ public class ValidatedUserDto {
     private final DepartmentType department;
 
     public UserDto toUserDto() {
-        return new UserDto(this.discordId, this.name, this.email, this.department);
+        return new UserDto(this.discordId, this.name, this.email, this.department, SogoPermission.STUDENT);
     }
 }

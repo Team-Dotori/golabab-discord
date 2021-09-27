@@ -1,5 +1,6 @@
 package com.dotori.golababdiscord.domain.authorize.advice;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -22,6 +23,11 @@ public class AuthorizeAdvice {
 
     @ExceptionHandler(SignatureException.class)
     public String handleSignatureException() {
+        return "authorize/error/unknown-signature";
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public String handleExpiredJwtException() {
         return "authorize/error/expired-jwt";
     }
 

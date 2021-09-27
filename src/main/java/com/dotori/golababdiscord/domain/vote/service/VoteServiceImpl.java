@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,35 +82,7 @@ public class VoteServiceImpl implements VoteService{
     public VoteResultGroupDto calculateVoteResult(InProgressVoteGroupDto dto) {
         VoteResultGroupDto result = new VoteResultGroupDto();
         dto.getVotes().forEach(vote -> result.put(vote.getMeal(), calculateMealVoteResult(vote)));
-        //MealType {MenuName, NumOfVote}
-
-
-//        AtomicReference<VoteResultGroupDto> group = new AtomicReference<>();
-//
-//        calculateResultAtGroup(inProgressVoteGroup, group);
         return result;
-    }
-
-    private void calculateResultAtGroup(List<InProgressVoteDto> inProgressVoteGroup,
-                                        AtomicReference<VoteResultGroupDto> group) {
-
-
-        // inProgressVoteGroup.forEach(vote -> {
-        //            VoteResultDto breakfast = new VoteResultDto();
-        //            VoteResultDto lunch = new VoteResultDto();
-        //            VoteResultDto dinner = new VoteResultDto();
-        //
-        //            switch (vote.getMeal()) {
-        //                case BREAKFAST: breakfast = calculateMealVoteResult(vote);
-        //                    break;
-        //                case LUNCH: lunch = calculateMealVoteResult(vote);
-        //                    break;
-        //                case DINNER: dinner = calculateMealVoteResult(vote);
-        //                    break;
-        //            }
-        //
-        //            group.set(new VoteResultGroupDto(breakfast, lunch, dinner));
-        //        });
     }
 
     private VoteResultDto calculateMealVoteResult(InProgressVoteDto dto) {

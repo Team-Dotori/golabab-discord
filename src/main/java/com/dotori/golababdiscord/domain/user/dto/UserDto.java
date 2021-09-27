@@ -1,7 +1,8 @@
-package com.dotori.golababdiscord.global.dto;
+package com.dotori.golababdiscord.domain.user.dto;
 
 import com.dotori.golababdiscord.domain.authorize.enum_type.DepartmentType;
-import com.dotori.golababdiscord.global.entity.User;
+import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
+import com.dotori.golababdiscord.domain.user.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,13 +13,15 @@ public class UserDto {
     private final String name;
     private final String email;
     private final DepartmentType department;
+    private final SogoPermission permission;
 
     public User toEntity() {
         User user = new User();
         user.setId(discordId);
         user.setName(name);
         user.setEmail(email);
-        user.setDepartmentType(department.name());
+        user.setDepartmentType(department);
+        user.setPermission(permission);
 
         return user;
     }

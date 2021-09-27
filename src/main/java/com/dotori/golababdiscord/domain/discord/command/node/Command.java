@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.discord.command;
+package com.dotori.golababdiscord.domain.discord.command.node;
 
 import com.dotori.golababdiscord.domain.discord.exception.ChildNotFoundException;
 import com.dotori.golababdiscord.domain.discord.exception.DuplicateTriggerException;

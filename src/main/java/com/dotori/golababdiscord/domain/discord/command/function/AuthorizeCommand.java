@@ -3,7 +3,7 @@ package com.dotori.golababdiscord.domain.discord.command.function;
 import com.dotori.golababdiscord.domain.authorize.dto.DomainValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.dto.UnValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
-import com.dotori.golababdiscord.domain.discord.command.LeafCommand;
+import com.dotori.golababdiscord.domain.discord.command.node.LeafCommand;
 import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
@@ -32,7 +32,7 @@ public class AuthorizeCommand extends LeafCommand {
 
     @Override//소고야 인증 실명 이메일
     protected void run(User user, MessageChannel channel, String args) {
-        if(!checkArgs(args)) throw new WrongArgumentException(args, "소고야 인증 `실명` `이메일`");
+        if(!checkArgs(args)) throw new WrongArgumentException(args, "소고야 인증 <실명> <이메일>");
 
         UnValidatedUserDto unValidatedUser = getUnValidatedUser(user, args);
         DomainValidatedUserDto domainValidatedUser = validateDomain(unValidatedUser, args);

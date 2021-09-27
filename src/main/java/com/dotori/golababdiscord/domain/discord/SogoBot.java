@@ -6,12 +6,11 @@ import com.dotori.golababdiscord.domain.discord.exception.VoteChannelNotFoundExc
 import com.dotori.golababdiscord.domain.discord.property.BotProperty;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.hooks.EventListener;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SogoBot {
     private final JDA jda;
     private final BotProperty botProperty;
@@ -32,7 +31,7 @@ public class SogoBot {
         return getUserById(userId).openPrivateChannel().complete();
     }
 
-    private User getUserById(Long userId) {
+    public User getUserById(Long userId) {
         User user;
 
         if((user = jda.retrieveUserById(userId).complete()) == null) throw new UserNotFoundException(userId);
@@ -47,5 +46,9 @@ public class SogoBot {
 
     public Message getMessageById(Long voteMessageId) {
         return getVoteChannel().retrieveMessageById(voteMessageId).complete();
+    }
+
+    public Guild getOfficialGuild() {
+        return getVoteChannel().getGuild();
     }
 }
