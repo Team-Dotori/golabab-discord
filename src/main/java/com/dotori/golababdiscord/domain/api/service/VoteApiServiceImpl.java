@@ -1,18 +1,22 @@
 package com.dotori.golababdiscord.domain.api.service;
 
-import com.dotori.golababdiscord.domain.api.dto.RequestDayVoteResultDto;
-import com.dotori.golababdiscord.domain.api.property.ApiProperty;
+import com.dotori.golababdiscord.domain.api.dto.RequestCollectedVoteDto;
+import com.dotori.golababdiscord.domain.api.property.VoteApiProperty;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-//@Service
+@Service
 public class VoteApiServiceImpl implements VoteApiService{
-    private final ApiService<RequestDayVoteResultDto> apiService;
-    private final ApiProperty apiProperty;
+    private final ApiService<String> apiService;
+    private final VoteApiProperty voteApiProperty;
 
     @Override
-    public void collectTotalVoteAtDay(RequestDayVoteResultDto result) {
-        apiService.post(apiProperty.getBaseUrl() + ":" +  apiProperty.getPort() + "/api/v1/vote/collect-total-vote-at-day", result, RequestDayVoteResultDto.class);
+    public void collectTotalVoteAtDay(RequestCollectedVoteDto result) {
+        HttpHeaders headers = new HttpHeaders();
+        //headers.set(HttpHeaders.AUTHORIZATION, voteApiProperty.getClientToken());
+        apiService. post(voteApiProperty.getBaseUrl() + ":" +  voteApiProperty.getPort() + "/api/v1/vote/collect-vote-at-day",
+                result, String.class, headers);
     }
 }

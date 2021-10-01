@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.api.service;
+package com.dotori.golababdiscord.domain.api.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

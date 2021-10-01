@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.discord.trigger;
+package com.dotori.golababdiscord.domain.discord.command.trigger;
 
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;

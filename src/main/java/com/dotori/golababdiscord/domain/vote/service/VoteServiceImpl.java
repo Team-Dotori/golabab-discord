@@ -1,6 +1,6 @@
 package com.dotori.golababdiscord.domain.vote.service;
 
-import com.dotori.golababdiscord.domain.api.dto.RequestDayVoteResultDto;
+import com.dotori.golababdiscord.domain.api.dto.RequestCollectedVoteDto;
 import com.dotori.golababdiscord.domain.api.dto.ResponseMealMenuDto;
 import com.dotori.golababdiscord.domain.api.service.LunchApiService;
 import com.dotori.golababdiscord.domain.api.service.VoteApiService;
@@ -115,7 +115,7 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public void sendVoteResult(VoteResultGroupDto result) {
-        RequestDayVoteResultDto requestDto = new RequestDayVoteResultDto(result);
+        RequestCollectedVoteDto requestDto = new RequestCollectedVoteDto(result);
         voteApiService.collectTotalVoteAtDay(requestDto);
     }
 

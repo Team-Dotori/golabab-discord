@@ -8,11 +8,11 @@ import java.util.Map;
 
 @Getter
 @RequiredArgsConstructor
-public class RequestMealVoteResultDto {
-    private final Map<String, Integer> menu;
+public class RequestMealDto {
+    private final Map<String, Integer> menus;
 
-    public RequestMealVoteResultDto() {
-        menu = new HashMap<>();
+    public RequestMealDto() {
+        menus = new HashMap<>();
     }
 
     public void addVote(String menu) {
@@ -20,8 +20,8 @@ public class RequestMealVoteResultDto {
     }
 
     public void addVote(String nameOfMenu, Integer numOfVote) {
-        if(menu.containsKey(nameOfMenu))
-            menu.replace(nameOfMenu, menu.get(nameOfMenu) + numOfVote);
-        else menu.put(nameOfMenu, numOfVote);
+        if(menus.containsKey(nameOfMenu))
+            menus.replace(nameOfMenu, menus.get(nameOfMenu) + numOfVote);
+        else menus.put(nameOfMenu, numOfVote);
     }
 }

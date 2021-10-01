@@ -29,7 +29,7 @@ public class PermissionGrantSchedulerImpl implements PermissionGrantScheduler{
 
     private void removeLegacyRoles(UserDto userDto) {
         for (SogoPermission value : SogoPermission.values()) {
-            roleService.removeRole(userDto, value.getRole());
+            roleService.removeRoleAtUser(userDto, value.getRole());
         }
     }
 

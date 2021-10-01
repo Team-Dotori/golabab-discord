@@ -2,7 +2,7 @@ package com.dotori.golababdiscord.domain.discord.command.node;
 
 import com.dotori.golababdiscord.domain.discord.exception.ChildNotFoundException;
 import com.dotori.golababdiscord.domain.discord.exception.DuplicateTriggerException;
-import com.dotori.golababdiscord.domain.discord.trigger.CommandTrigger;
+import com.dotori.golababdiscord.domain.discord.command.trigger.CommandTrigger;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;

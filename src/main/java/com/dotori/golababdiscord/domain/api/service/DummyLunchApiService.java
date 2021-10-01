@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Service("dummy-lunch-api-service")
+//@Service("dummy-lunch-api-service")
 public class DummyLunchApiService implements LunchApiService{
     @Override
     public ResponseDayMenuDto getMealsToday() {

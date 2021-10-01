@@ -6,9 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties("vote-api")
+@ConfigurationProperties("lunch-api")
 @Getter @Setter
-public class ApiProperty {
+public class LunchApiProperty {
     private String baseUrl;
     private String port;
+    private String secret;
 }

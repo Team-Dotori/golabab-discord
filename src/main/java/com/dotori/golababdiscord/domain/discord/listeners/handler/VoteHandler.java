@@ -13,7 +13,9 @@ import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class VoteHandler implements Handler<GuildMessageReactionAddEvent>{
     private final BotProperty botProperty;

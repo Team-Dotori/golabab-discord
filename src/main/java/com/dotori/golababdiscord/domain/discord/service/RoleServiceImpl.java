@@ -47,10 +47,15 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getRole(RoleDto dto) {
-        if(!permissionRepository.existsByName(dto.getName()))
-            return createNewRole(dto);
-        Long id = permissionRepository.getByName(dto.getName()).getId();
+        Long id = getRoleId(dto);
         return sogoBot.getOfficialGuild().getRoleById(id);
+    }
+
+    @Override
+    public Long getRoleId(RoleDto dto) {
+        if(!permissionRepository.existsByName(dto.getName()))
+            return createNewRole(dto).getIdLong();
+        return permissionRepository.getByName(dto.getName()).getId();
     }
 
     @Override
@@ -65,7 +70,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void removeRole(UserDto userDto, RoleDto roleDto) {
+    public void removeRoleAtUser(UserDto userDto, RoleDto roleDto) {
         Role role = getRole(roleDto);
         User user = userService.getUser(userDto);
 
@@ -73,5 +78,18 @@ public class RoleServiceImpl implements RoleService {
         Member member = officialGuild.retrieveMember(user).complete();
 
         officialGuild.removeRoleFromMember(member, role).complete();
+    }
+
+    @Override
+    public void removeRole(RoleDto roleDto) {
+        if(permissionRepository.existsByName(roleDto.getName())) {
+            Long roleId = permissionRepository.getByName(roleDto.getName()).getId();
+            permissionRepository.deleteById(roleId);
+
+            Guild officialGuild = sogoBot.getOfficialGuild();
+            Role role = officialGuild.getRoleById(roleId);
+            if(role != null)
+                role.delete().complete();
+        }
     }
 }
