@@ -3,12 +3,13 @@ package com.dotori.golababdiscord.domain.authorize.util;
 import com.dotori.golababdiscord.domain.authorize.dto.DomainValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.dto.ValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.enum_type.DepartmentType;
+import com.dotori.golababdiscord.global.property.JwtProperty;
 import com.dotori.golababdiscord.global.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -17,11 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class AuthTokenUtils implements JwtUtils<DomainValidatedUserDto, ValidatedUserDto> {
-    @Value("${jwt.secret}")
-    private String secretKey;
-    @Value("${jwt.issuer}")
-    private String issuer;
+    private final JwtProperty jwtProperty;
 
     @Override
     public String generateToken(DomainValidatedUserDto user) {
@@ -29,11 +28,11 @@ public class AuthTokenUtils implements JwtUtils<DomainValidatedUserDto, Validate
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                .setIssuer(issuer)
+                .setIssuer(jwtProperty.getIssuer())
                 .setIssuedAt(now)
                 .setExpiration(getExpiration(now))
                 .addClaims(getClaimsByUser(user))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, jwtProperty.getSecret())
                 .compact();
     }
     private Map<String, Object> getClaimsByUser(DomainValidatedUserDto user) {
@@ -53,7 +52,7 @@ public class AuthTokenUtils implements JwtUtils<DomainValidatedUserDto, Validate
     @Override
     public void validateToken(String token) {
         if(token == null) throw new IllegalArgumentException("token is null");
-        Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        Jwts.parser().setSigningKey(jwtProperty.getSecret()).parseClaimsJws(token);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class AuthTokenUtils implements JwtUtils<DomainValidatedUserDto, Validate
         return getUserByClaims(claims);
     }
     private Claims getClaimsByToken(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(jwtProperty.getSecret()).parseClaimsJws(token).getBody();
     }
     private ValidatedUserDto getUserByClaims(Claims data) {
         return new ValidatedUserDto(

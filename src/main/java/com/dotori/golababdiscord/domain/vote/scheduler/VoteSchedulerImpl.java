@@ -47,8 +47,6 @@ public class VoteSchedulerImpl implements VoteScheduler{
         saveInpProgressVote(breakfast);
     }
     private void saveInpProgressVote(InProgressVoteDto inProgressVote) {
-        log.info(inProgressVote.getMeal() + "\n아이디 : " + inProgressVote.getVoteMessageId() + "\n메뉴 : " +
-                Arrays.toString(inProgressVote.getMenus().toArray()));
         voteService.save(inProgressVote);
     }
 
@@ -69,12 +67,4 @@ public class VoteSchedulerImpl implements VoteScheduler{
 
         saveInpProgressVote(dinner);
     }
-    /*
-    @Scheduled(cron="20 * * * * *")
-    public void openTestVote() {
-        VoteDto dinnerVote = voteService.createNewVote(MealType.DINNER);
-        InProgressVoteDto dinner = voteService.openVote(dinnerVote);
-
-        saveInpProgressVote(dinner);
-    }*/
 }
