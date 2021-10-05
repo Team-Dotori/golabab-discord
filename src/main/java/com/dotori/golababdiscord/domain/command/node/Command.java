@@ -1,9 +1,12 @@
-package com.dotori.golababdiscord.domain.discord.command.node;
+package com.dotori.golababdiscord.domain.command.node;
 
 import com.dotori.golababdiscord.domain.discord.exception.ChildNotFoundException;
 import com.dotori.golababdiscord.domain.discord.exception.DuplicateTriggerException;
-import com.dotori.golababdiscord.domain.discord.command.trigger.CommandTrigger;
+import com.dotori.golababdiscord.domain.command.trigger.CommandTrigger;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
@@ -12,8 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class Command {
-    List<Command> children;
-    CommandTrigger commandTrigger;
+    @Getter @Setter
+    private int depth;
+    @Getter(AccessLevel.PROTECTED)
+    private final List<Command> children;
+    protected final CommandTrigger commandTrigger;
 
     public Command(String prefix) {
         this(new CommandTrigger(prefix));
@@ -45,6 +51,11 @@ public abstract class Command {
                 .user(user)
                 .channel(channel)
                 .execute(args);
+    }
+
+    public void initDepth(int depth) {
+        setDepth(depth);
+        getChildren().forEach(child -> child.initDepth(depth+1));
     }
 
     @RequiredArgsConstructor

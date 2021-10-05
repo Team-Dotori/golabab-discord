@@ -1,6 +1,7 @@
-package com.dotori.golababdiscord.domain.discord.command.function;
+package com.dotori.golababdiscord.domain.command.function;
 
-import com.dotori.golababdiscord.domain.discord.command.node.Command;
+import com.dotori.golababdiscord.domain.command.node.Command;
+import com.dotori.golababdiscord.domain.logger.annotation.CommandRunner;
 import com.dotori.golababdiscord.domain.vote.scheduler.VoteScheduler;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -13,6 +14,7 @@ public class VoteCommand extends Command {
         this.voteScheduler = voteScheduler;
     }
 
+    @CommandRunner
     @Override
     protected void run(User user, MessageChannel channel, String args) {
         switch (args) {

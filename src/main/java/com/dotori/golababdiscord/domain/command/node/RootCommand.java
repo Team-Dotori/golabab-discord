@@ -1,10 +1,10 @@
-package com.dotori.golababdiscord.domain.discord.command.node;
+package com.dotori.golababdiscord.domain.command.node;
 
 import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
 import com.dotori.golababdiscord.domain.discord.SogoBot;
-import com.dotori.golababdiscord.domain.discord.command.function.AuthorizeCommand;
-import com.dotori.golababdiscord.domain.discord.command.function.VoteChannelCommand;
-import com.dotori.golababdiscord.domain.discord.command.function.VoteCommand;
+import com.dotori.golababdiscord.domain.command.function.AuthorizeCommand;
+import com.dotori.golababdiscord.domain.command.function.VoteChannelCommand;
+import com.dotori.golababdiscord.domain.command.function.VoteCommand;
 import com.dotori.golababdiscord.domain.discord.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.property.BotProperty;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
@@ -35,6 +35,7 @@ public class RootCommand extends Command{
                        SogoBot sogoBot) {
         super(botProperty.getCommandPrefix());
         initChildren(mailService, messageSenderService, authorizeService, messageViews, templateEngine, voteScheduler, voteConfigurationService, userService, sogoBot);
+        initDepth(0);
         this.botProperty = botProperty;
     }
 

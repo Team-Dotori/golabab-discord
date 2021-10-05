@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.discord.command.node;
+package com.dotori.golababdiscord.domain.command.node;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;

@@ -1,12 +1,13 @@
-package com.dotori.golababdiscord.domain.discord.command.function;
+package com.dotori.golababdiscord.domain.command.function;
 
 import com.dotori.golababdiscord.domain.discord.SogoBot;
-import com.dotori.golababdiscord.domain.discord.command.node.LeafCommand;
+import com.dotori.golababdiscord.domain.command.node.LeafCommand;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
+import com.dotori.golababdiscord.domain.logger.annotation.CommandRunner;
 import com.dotori.golababdiscord.domain.permission.enum_type.Feature;
 import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
 import com.dotori.golababdiscord.domain.user.service.UserService;
@@ -30,6 +31,7 @@ public class VoteChannelCommand extends LeafCommand {
         this.sogoBot = sogoBot;
     }
 
+    @CommandRunner
     @Override
     protected void run(User user, MessageChannel channel, String args) {
         if(!checkPermission(user)) throw new PermissionDeniedException(Feature.GOLABAB_MANAGE);

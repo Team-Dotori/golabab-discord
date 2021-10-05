@@ -1,13 +1,14 @@
-package com.dotori.golababdiscord.domain.discord.command.function;
+package com.dotori.golababdiscord.domain.command.function;
 
 import com.dotori.golababdiscord.domain.authorize.dto.DomainValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.dto.UnValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
-import com.dotori.golababdiscord.domain.discord.command.node.LeafCommand;
+import com.dotori.golababdiscord.domain.command.node.LeafCommand;
 import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
+import com.dotori.golababdiscord.domain.logger.annotation.CommandRunner;
 import com.dotori.golababdiscord.infra.service.MailService;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -30,6 +31,7 @@ public class AuthorizeCommand extends LeafCommand {
         this.templateEngine = templateEngine;
     }
 
+    @CommandRunner
     @Override//소고야 인증 실명 이메일
     protected void run(User user, MessageChannel channel, String args) {
         if(!checkArgs(args)) throw new WrongArgumentException(args, "소고야 인증 <실명> <이메일>");
