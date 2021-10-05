@@ -1,22 +1,33 @@
 package com.dotori.golababdiscord.domain.logger.advice;
 
-import com.dotori.golababdiscord.domain.logger.annotation.CommandRunner;
+import com.dotori.golababdiscord.domain.discord.property.BotProperty;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
 
-@Aspect
 @Slf4j
+@Component
+@Aspect
+@RequiredArgsConstructor
 public class CommandLogger {
-    @Around("@annotation(com.dotori.golababdiscord.domain.logger.annotation.CommandRunner)")
-    public void loggingCommand(ProceedingJoinPoint pjp) {
-        MethodSignature method = (MethodSignature) pjp.getSignature();
-        CommandRunner annotation = method.getMethod().getAnnotation(CommandRunner.class);
+    private final BotProperty botProperty;
 
-        if(!annotation.requireLog()) return;
+    @AfterReturning("execution(void com.dotori.golababdiscord.domain.command.node.RootCommand.executeRoot(..))")
+    public void arround(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        User user = (User) args[0];
+        MessageChannel channel = (MessageChannel) args[1];
+        String commandArgs = (String) args[2];
 
-        log.info("test!");
+        log.info("Command \"{} {}\" is executed by {} at #{}",
+                botProperty.getCommandPrefix(), commandArgs,
+                user.getName(),
+                channel.getName());
     }
+
 }

@@ -76,12 +76,6 @@ public class RootCommand extends Command{
 
     public void executeRoot(User user, MessageChannel channel, String args) {
         execute(user, channel, args);
-        /*
-        log.info("Command \"{} {}\" is executed by {} at #{}",
-                botProperty.getCommandPrefix(), args,
-                user.getName(),
-                channel.getName());
-         */
     }
 
     private String encodeRootArgsByInput(String args) {

@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.discord.advice;
+package com.dotori.golababdiscord.domain.command.advice;
 
 import com.dotori.golababdiscord.domain.authorize.enum_type.FailureReason;
 import com.dotori.golababdiscord.domain.authorize.exception.DepartmentNotFoundException;
