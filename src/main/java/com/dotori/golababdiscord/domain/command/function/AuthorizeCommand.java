@@ -1,9 +1,9 @@
-package com.dotori.golababdiscord.domain.discord.command.function;
+package com.dotori.golababdiscord.domain.command.function;
 
 import com.dotori.golababdiscord.domain.authorize.dto.DomainValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.dto.UnValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
-import com.dotori.golababdiscord.domain.discord.command.node.LeafCommand;
+import com.dotori.golababdiscord.domain.command.node.LeafCommand;
 import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;

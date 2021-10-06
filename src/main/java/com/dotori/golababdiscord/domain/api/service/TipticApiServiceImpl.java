@@ -3,6 +3,7 @@ package com.dotori.golababdiscord.domain.api.service;
 import com.dotori.golababdiscord.domain.api.exception.ApiException;
 import com.dotori.golababdiscord.domain.api.property.VoteApiProperty;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class TipticApiServiceImpl implements TipticApiService{
     private final ApiService<String> apiService;
     private final VoteApiProperty voteApiProperty;
 
+//    @ApiEntry(method = HttpMethod.GET, resourcePath = "/api/v1/tiptic/get-improve-message")
     @Override
     public String getImproveMessage() {
         ResponseEntity<String> response = apiService.get(voteApiProperty.getBaseUrl() + ":" +  voteApiProperty.getPort() + "/api/v1/tiptic/get-improve-message", String.class);

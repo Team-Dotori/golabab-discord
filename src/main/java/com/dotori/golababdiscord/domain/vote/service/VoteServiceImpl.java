@@ -2,8 +2,8 @@ package com.dotori.golababdiscord.domain.vote.service;
 
 import com.dotori.golababdiscord.domain.api.dto.RequestCollectedVoteDto;
 import com.dotori.golababdiscord.domain.api.dto.ResponseMealMenuDto;
-import com.dotori.golababdiscord.domain.api.service.LunchApiService;
 import com.dotori.golababdiscord.domain.api.service.VoteApiService;
+import com.dotori.golababdiscord.domain.api.service.caller.ApiCaller;
 import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
@@ -30,8 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class VoteServiceImpl implements VoteService{
-    private final LunchApiService lunchApiService;
-    private final VoteApiService voteApiService;
+    private final ApiCaller apiCaller;
     private final MessageSenderService messageSenderService;
     private final MessageViews messageViews;
     private final InProgressVoteRepository inProgressVoteRepository;
@@ -40,15 +39,13 @@ public class VoteServiceImpl implements VoteService{
     private final SogoBot sogoBot;
 
     @Lazy
-    public VoteServiceImpl(LunchApiService lunchApiService,
-                           VoteApiService voteApiService,
+    public VoteServiceImpl(ApiCaller apiCaller,
                            MessageSenderService messageSenderService,
                            MessageViews messageViews,
                            InProgressVoteRepository inProgressVoteRepository,
                            MenuRepository menuRepository,
                            DateUtils dateUtils, SogoBot sogoBot) {
-        this.lunchApiService = lunchApiService;
-        this.voteApiService = voteApiService;
+        this.apiCaller = apiCaller;
         this.messageSenderService = messageSenderService;
         this.messageViews = messageViews;
         this.inProgressVoteRepository = inProgressVoteRepository;
@@ -60,7 +57,7 @@ public class VoteServiceImpl implements VoteService{
     @Override
     public VoteDto createNewVote(MealType meal) {
         Date today = dateUtils.getToday();
-        ResponseMealMenuDto menus = lunchApiService.getMealToday(meal);
+        ResponseMealMenuDto menus = apiCaller.getMealToday(meal);
         return new VoteDto(today, meal, menus);
     }
 
@@ -116,7 +113,7 @@ public class VoteServiceImpl implements VoteService{
     @Override
     public void sendVoteResult(VoteResultGroupDto result) {
         RequestCollectedVoteDto requestDto = new RequestCollectedVoteDto(result);
-        voteApiService.collectTotalVoteAtDay(requestDto);
+        apiCaller.collectTotalVoteAtDay(requestDto);
     }
 
     @Override @Transactional

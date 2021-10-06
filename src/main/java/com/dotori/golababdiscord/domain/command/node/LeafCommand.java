@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.discord.command.node;
+package com.dotori.golababdiscord.domain.command.node;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -9,7 +9,8 @@ public abstract class LeafCommand extends Command{
     }
 
     @Override
-    public void execute(User user, MessageChannel channel, String args) {
+    public boolean execute(User user, MessageChannel channel, String args) {
         run(user, channel, args);
+        return true;
     }
 }

@@ -1,7 +1,8 @@
-package com.dotori.golababdiscord.domain.discord.advice;
+package com.dotori.golababdiscord.domain.command.advice;
 
 import com.dotori.golababdiscord.domain.authorize.enum_type.FailureReason;
 import com.dotori.golababdiscord.domain.authorize.exception.DepartmentNotFoundException;
+import com.dotori.golababdiscord.domain.command.exception.UnknownCommandException;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.enum_type.WrongCommandUsageType;
@@ -33,6 +34,7 @@ public class CommandAdvice {
         MessageReceivedEvent event = (MessageReceivedEvent) pjp.getArgs()[0];
         try {
             pjp.proceed();
+        } catch (UnknownCommandException e) {
         } catch (WrongArgumentException e) {
             ReceiverDto receiver = new ReceiverDto(event.getChannel());
             MessageDto message = messageViews.generateWrongCommandUsageMessage(WrongCommandUsageType.WRONG_ARGUMENT, e.getArgs(), e.getUsage());

@@ -1,10 +1,11 @@
-package com.dotori.golababdiscord.domain.discord.command.node;
+package com.dotori.golababdiscord.domain.command.node;
 
 import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
+import com.dotori.golababdiscord.domain.command.exception.UnknownCommandException;
 import com.dotori.golababdiscord.domain.discord.SogoBot;
-import com.dotori.golababdiscord.domain.discord.command.function.AuthorizeCommand;
-import com.dotori.golababdiscord.domain.discord.command.function.VoteChannelCommand;
-import com.dotori.golababdiscord.domain.discord.command.function.VoteCommand;
+import com.dotori.golababdiscord.domain.command.function.AuthorizeCommand;
+import com.dotori.golababdiscord.domain.command.function.VoteChannelCommand;
+import com.dotori.golababdiscord.domain.command.function.VoteCommand;
 import com.dotori.golababdiscord.domain.discord.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.property.BotProperty;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
@@ -35,6 +36,7 @@ public class RootCommand extends Command{
                        SogoBot sogoBot) {
         super(botProperty.getCommandPrefix());
         initChildren(mailService, messageSenderService, authorizeService, messageViews, templateEngine, voteScheduler, voteConfigurationService, userService, sogoBot);
+        initDepth(0);
         this.botProperty = botProperty;
     }
 
@@ -65,22 +67,18 @@ public class RootCommand extends Command{
     }
 
     @Override
-    public void execute(User user, MessageChannel channel, String args) {
+    public boolean execute(User user, MessageChannel channel, String args) {
         String prefix = getRootInputPrefix(args);
         String childArgs = encodeRootArgsByInput(args);
         if(commandTrigger.checkTrigger(prefix)) {
             super.execute(user, channel, childArgs);
+            return true;
         }
+        return false;
     }
 
     public void executeRoot(User user, MessageChannel channel, String args) {
-        execute(user, channel, args);
-        /*
-        log.info("Command \"{} {}\" is executed by {} at #{}",
-                botProperty.getCommandPrefix(), args,
-                user.getName(),
-                channel.getName());
-         */
+        if(!execute(user, channel, args)) throw new UnknownCommandException(args);
     }
 
     private String encodeRootArgsByInput(String args) {

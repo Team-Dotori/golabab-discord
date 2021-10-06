@@ -1,6 +1,5 @@
 package com.dotori.golababdiscord.domain.api.service;
 
-import com.dotori.golababdiscord.domain.api.dto.RequestCollectedVoteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,15 +17,15 @@ public class ApiService<T> {
         return restTemplate.getForEntity(url, clazz);
     }
 
-    public <T1> void post(String url, T1 body, Class<T> clazz) {
-        HttpEntity<T1> request = new HttpEntity<>(body);
-        restTemplate.postForEntity(url, request, clazz);
-    }
-
     protected ResponseEntity<T> get(String url, Class<T> clazz, HttpHeaders headers) {
         HttpEntity request = new HttpEntity(headers);
 
         return restTemplate.exchange(url, HttpMethod.GET, request, clazz);
+    }
+
+    public <T1> void post(String url, T1 body, Class<T> clazz) {
+        HttpEntity<T1> request = new HttpEntity<>(body);
+        restTemplate.postForEntity(url, request, clazz);
     }
 
     public <T1> void post(String url, T1 body, Class<T> clazz, HttpHeaders headers) {

@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain;
+package com.dotori.golababdiscord.domain.logger.advice;
 
 import com.dotori.golababdiscord.domain.discord.property.BotProperty;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +17,8 @@ import org.springframework.stereotype.Component;
 public class CommandLogger {
     private final BotProperty botProperty;
 
-    @AfterReturning("execution(boolean com.dotori.golababdiscord.domain.discord.command.node.RootCommand.executeRoot(..))")
-    public void arround(JoinPoint joinPoint) throws Throwable {
-        log.info("Command");
-
+    @AfterReturning("execution(void com.dotori.golababdiscord.domain.command.node.RootCommand.executeRoot(..))")
+    public void arround(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         User user = (User) args[0];
         MessageChannel channel = (MessageChannel) args[1];
