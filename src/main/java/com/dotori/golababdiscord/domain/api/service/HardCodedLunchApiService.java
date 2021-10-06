@@ -24,6 +24,7 @@ public class HardCodedLunchApiService implements LunchApiService {
     private final ApiService<String> apiService;
     private final LunchApiProperty lunchApiProperty;
 
+//    @ApiEntry(method = HttpMethod.GET, resourcePath = "/api/v1/meals/get-meals-today")
     @Override
     public ResponseDayMenuDto getMealsToday() {
         ResponseEntity<String> response =

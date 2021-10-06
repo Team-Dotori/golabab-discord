@@ -9,7 +9,8 @@ public abstract class LeafCommand extends Command{
     }
 
     @Override
-    public void execute(User user, MessageChannel channel, String args) {
+    public boolean execute(User user, MessageChannel channel, String args) {
         run(user, channel, args);
+        return true;
     }
 }

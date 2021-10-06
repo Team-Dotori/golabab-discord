@@ -46,11 +46,12 @@ public abstract class Command {
                 child -> child.commandTrigger.equals(command.commandTrigger));
     }
 
-    public void execute(User user, MessageChannel channel, String args) {
+    public boolean execute(User user, MessageChannel channel, String args) {
         new Executor(children)
                 .user(user)
                 .channel(channel)
                 .execute(args);
+        return true;
     }
 
     public void initDepth(int depth) {

@@ -1,6 +1,7 @@
 package com.dotori.golababdiscord.domain.command.node;
 
 import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
+import com.dotori.golababdiscord.domain.command.exception.UnknownCommandException;
 import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.command.function.AuthorizeCommand;
 import com.dotori.golababdiscord.domain.command.function.VoteChannelCommand;
@@ -66,16 +67,18 @@ public class RootCommand extends Command{
     }
 
     @Override
-    public void execute(User user, MessageChannel channel, String args) {
+    public boolean execute(User user, MessageChannel channel, String args) {
         String prefix = getRootInputPrefix(args);
         String childArgs = encodeRootArgsByInput(args);
         if(commandTrigger.checkTrigger(prefix)) {
             super.execute(user, channel, childArgs);
+            return true;
         }
+        return false;
     }
 
     public void executeRoot(User user, MessageChannel channel, String args) {
-        execute(user, channel, args);
+        if(!execute(user, channel, args)) throw new UnknownCommandException(args);
     }
 
     private String encodeRootArgsByInput(String args) {
