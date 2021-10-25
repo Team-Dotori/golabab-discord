@@ -70,7 +70,7 @@ public class AuthorizeCommand extends LeafCommand {
         context.setVariable("link", authorizeLink);
         context.setVariable("name", name);
 
-        return templateEngine.process("authorize/authorize-mail", context);
+        return templateEngine.process("discord/authorize/authorize-mail", context);
     }
 
     private UnValidatedUserDto getUnValidatedUser(User user, String args) {
