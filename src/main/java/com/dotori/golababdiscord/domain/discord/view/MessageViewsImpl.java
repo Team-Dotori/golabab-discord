@@ -7,16 +7,22 @@ import com.dotori.golababdiscord.domain.discord.enum_type.WrongCommandUsageType;
 import com.dotori.golababdiscord.domain.discord.exception.UnknownFailureReasonException;
 import com.dotori.golababdiscord.domain.permission.enum_type.Feature;
 import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
+import com.dotori.golababdiscord.domain.ranking.dto.RankingDto;
+import com.dotori.golababdiscord.domain.ranking.dto.RequestRankingDto;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
 import com.dotori.golababdiscord.domain.vote.enum_type.VoteEmoji;
+import com.dotori.golababdiscord.global.utils.DateUtils;
+import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.utils.MarkdownUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
+import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class MessageViewsImpl implements MessageViews{
     @Value("${bot.command-prefix}")
     private String rootPrefix;
@@ -220,5 +226,55 @@ public class MessageViewsImpl implements MessageViews{
         FooterDto footer = new FooterDto("", "");
 
         return new MessageDto(title, description, color, author, footer);
+    }
+
+    @Override
+    public MessageDto generateRankingMessage(RequestRankingDto ranking) {
+        TitleDto title = new TitleDto("투표 결과가 도착했어요!");
+        String description = "과연 어떤 메뉴가 1위를 차지했을까요?";
+        Color color = new Color(32, 75, 205);
+        AuthorDto author = new AuthorDto("Dotori 전공동아리");
+        FooterDto footer = new FooterDto("", "");
+
+        MessageDto message = new MessageDto(title, description, color, author, footer);
+
+        List<RankingDto> rankings = ranking.getList();
+        for (int i = 0; i < 5; i++) {
+            RankingDto menu = rankings.get(i);
+            message.addSection(
+                    new SectionDto(String.format("%d위, %s", i+1, menu.getMenuName()), menu.getNumOfVote() + "표", true));
+        }
+
+        int maxNumOfVote = rankings.get(0).getNumOfVote();
+        for(int i = 5; i < rankings.size(); i++) {
+            RankingDto menu = rankings.get(i);
+            int percent = (menu.getNumOfVote() * 100) / maxNumOfVote;
+            message.addSection(
+                    new SectionDto(menu.getMenuName(), String.format("%23s%s표", getGraph(percent), menu.getNumOfVote()), false));
+        }
+
+        return message;
+    }
+
+    public String getGraph(int percent) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < percent / 5; i++) {
+            sb.append("▉");
+        }
+        switch(percent % 5) {
+            case 4:
+                sb.append("▊");
+                break;
+            case 3:
+                sb.append("▋");
+                break;
+            case 2:
+                sb.append("▍");
+                break;
+            case 1:
+                sb.append("▏");
+                break;
+        }
+        return sb.toString();
     }
 }
