@@ -6,6 +6,7 @@ import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.enum_type.WrongCommandUsageType;
 import com.dotori.golababdiscord.domain.permission.enum_type.Feature;
 import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
+import com.dotori.golababdiscord.domain.ranking.dto.RequestRankingDto;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
 import net.dv8tion.jda.api.entities.User;
 
@@ -32,4 +33,6 @@ public interface MessageViews {
     MessageDto generateChannelChangedMessage(User user);
     MessageDto generateCheckChannelMessage(User user);
     MessageDto generateCheckChannelAlarmMessage();//ex, 투표 채널에서 멘션을 보내드렸습니다!
+
+    MessageDto generateRankingMessage(RequestRankingDto ranking);
 }

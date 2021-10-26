@@ -4,4 +4,5 @@ import java.util.Date;
 
 public interface DateUtils {
     Date getToday();
+    int getWeekToDay();
 }

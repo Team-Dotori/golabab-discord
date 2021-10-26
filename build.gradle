@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.dotori'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-RELEASE'
 sourceCompatibility = '11'
 
 
@@ -40,6 +40,9 @@ dependencies {
 	testImplementation 'org.mockito:mockito-inline:3.12.4'
 	implementation("net.dv8tion:JDA:4.3.0_324")
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	//Cacophony Library
+	//implementation 'io.github.key-del-jeeinho:cacophony-spring-boot-starter:1.0.3-RELEASE'
 }
 
 test {

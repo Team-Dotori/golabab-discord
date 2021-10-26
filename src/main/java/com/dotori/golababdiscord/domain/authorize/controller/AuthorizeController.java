@@ -33,7 +33,7 @@ public class AuthorizeController {
 
         enrollService.enroll(validatedUser.toUserDto());
 
-        return "authorize/authorized";
+        return "discord/authorize/authorized";
     }
 
     private void sendAuthorizedMessage(Long discordId) {
@@ -48,6 +48,6 @@ public class AuthorizeController {
         MessageChannel channel = sogoBot.getPrivateChannelByUserId(discordId);
         messageSenderService.sendMessage(new ReceiverDto(channel),
                 messageViews.generateAuthorizeFailureMessage(FailureReason.ALREADY_ENROLLED));
-        return "enroll/error/already-enrolled";
+        return "discord/enroll/error/already-enrolled";
     }
 }
