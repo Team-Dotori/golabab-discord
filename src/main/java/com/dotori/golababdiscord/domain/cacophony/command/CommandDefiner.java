@@ -1,25 +1,37 @@
 package com.dotori.golababdiscord.domain.cacophony.command;
 
-import com.dotori.golababdiscord.domain.cacophony.command.action.AuthorizeAction;
-import com.dotori.golababdiscord.domain.cacophony.command.action.VoteChannelAction;
-import com.dotori.golababdiscord.domain.cacophony.command.action.VoteOpenAction;
+import com.dotori.golababdiscord.domain.cacophony.action.AuthorizeAction;
+import com.dotori.golababdiscord.domain.cacophony.action.VoteChannelAction;
+import com.dotori.golababdiscord.domain.cacophony.action.VoteOpenAction;
 import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
+import io.github.key_del_jeeinho.cacophony_lib.domain.command.RootCommandGenerator;
 import io.github.key_del_jeeinho.cacophony_lib.domain.command.component.Argument;
+import io.github.key_del_jeeinho.cacophony_lib.domain.command.manager.CommandManager;
 import io.github.key_del_jeeinho.cacophony_lib.global.dto.ChannelDto;
 import io.github.key_del_jeeinho.cacophony_lib.global.dto.UserDto;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 import static io.github.key_del_jeeinho.cacophony_lib.domain.command.CommandEntry.*;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 //디스코드 봇에 사용할 모든 Command 를 명시하는 클래스
 @Component
-@RequiredArgsConstructor
+@DependsOn("commandManager")
 public class CommandDefiner {
-    @PostConstruct //컴포넌트 생성시 Command 들을 명시한다
-    public void defineCommand() {
+    private final AuthorizeAction authorizeAction;
+    private final VoteOpenAction voteOpenAction;
+    private final VoteChannelAction voteChannelAction;
+
+    public CommandDefiner(AuthorizeAction authorizeAction, VoteOpenAction voteOpenAction, VoteChannelAction voteChannelAction, CommandManager commandManager) {
+        this.authorizeAction = authorizeAction;
+        this.voteOpenAction = voteOpenAction;
+        this.voteChannelAction = voteChannelAction;
+        RootCommandGenerator.init(commandManager);
+
         root("라밥이",
                 command("인증",
                         action(this::authorize)),
@@ -43,19 +55,19 @@ public class CommandDefiner {
         ).complete();
     }
 
-    private void changeVoteChannel(Argument argument, UserDto author, ChannelDto channel) {
-
-    }
-
-    private void checkVoteChannel(Argument argument, UserDto author, ChannelDto channel) {
-
+    private void authorize(Argument argument, UserDto author, ChannelDto channel) {
+        authorizeAction.authorize(argument, author, channel);
     }
 
     private void openVote(MealType type) {
-
+        voteOpenAction.openVote(type);
     }
 
-    private void authorize(Argument argument, UserDto author, ChannelDto channel) {
+    private void changeVoteChannel(Argument argument, UserDto author, ChannelDto channel) {
+        voteChannelAction.changeVoteChannel(argument, author, channel);
+    }
 
+    private void checkVoteChannel(Argument argument, UserDto author, ChannelDto channel) {
+        voteChannelAction.checkVoteChannel(argument, author, channel);
     }
 }

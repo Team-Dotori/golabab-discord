@@ -1,8 +1,7 @@
-package com.dotori.golababdiscord.domain.cacophony.command.action;
+package com.dotori.golababdiscord.domain.cacophony.action;
 
 import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
-import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
 import com.dotori.golababdiscord.domain.permission.enum_type.Feature;
@@ -13,14 +12,16 @@ import io.github.key_del_jeeinho.cacophony_lib.domain.command.component.Argument
 import io.github.key_del_jeeinho.cacophony_lib.global.dto.ChannelDto;
 import io.github.key_del_jeeinho.cacophony_lib.global.dto.UserDto;
 import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.EmbedMessageDto;
-import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.TitleDto;
 import lombok.RequiredArgsConstructor;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.springframework.stereotype.Component;
 
 import static io.github.key_del_jeeinho.cacophony_lib.domain.action.ActionEntry.chat;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Component
 @RequiredArgsConstructor
 public class VoteChannelAction {
@@ -59,13 +60,13 @@ public class VoteChannelAction {
         MessageDto legacyMessage = messageViews.generateCheckChannelAlarmMessage();//채널 확인 완료 메세지를 전송한다
 
         //TODO 2021.10.30 메세지 로직 개편 후 삭제 JeeInho
-        EmbedMessageDto message = MessageViews.getEmbedMessageByLegacyMessageDto(legacyMessage);
+        EmbedMessageDto message = MessageViews.getEmbedMessageByLegacyMessageDto(legacyMessage);//불러온 레거시 메세지를 현재 스펙의 메세지로 치환한다(Message 로직 리펙터링 후 제거예정)
         chat(message, channelId);//메세지를 전송한다
     }
 
     //관리 권한이 있는지 확인하는 메소드
     private boolean checkPermission(long userId) {
-        User user = sogoBot.getUserById(userId);
+        User user = sogoBot.getUserById(userId);//유저 아이디를 통해 유저를 가져온다
         SogoPermission permission = userService.getUserDto(user).getPermission();//유저의 권한을 가져옴
         return permission.isHaveFeature(Feature.GOLABAB_MANAGE);//관리 권한 소유 여부를 반환
     }
