@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 //authorize 단에서 발생하는 예외들을 처리하는 클래스
 @ControllerAdvice
 public class AuthorizeAdvice {

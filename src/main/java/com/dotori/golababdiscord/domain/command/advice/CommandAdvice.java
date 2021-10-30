@@ -21,6 +21,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+//
 @Component
 @Aspect
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class CommandAdvice {
         MessageReceivedEvent event = (MessageReceivedEvent) pjp.getArgs()[0];
         try {
             pjp.proceed();
-        } catch (UnknownCommandException e) {
+        } catch (UnknownCommandException ignored) {
         } catch (WrongArgumentException e) {
             ReceiverDto receiver = new ReceiverDto(event.getChannel());
             MessageDto message = messageViews.generateWrongCommandUsageMessage(WrongCommandUsageType.WRONG_ARGUMENT, e.getArgs(), e.getUsage());

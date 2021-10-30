@@ -17,6 +17,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 //인증토큰을 발급/복호화 하는 유틸 클래스
 @Component
 @RequiredArgsConstructor

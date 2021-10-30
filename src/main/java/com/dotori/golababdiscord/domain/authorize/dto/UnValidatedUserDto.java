@@ -4,6 +4,10 @@ import com.dotori.golababdiscord.domain.authorize.enum_type.DepartmentType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 //검증되지 않은 유저의 정보를 담는 DTO
 @RequiredArgsConstructor
 @Getter

@@ -4,6 +4,10 @@ import com.dotori.golababdiscord.domain.authorize.dto.DomainValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.dto.UnValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.dto.ValidatedUserDto;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 //인증로직을 처리하는 서비스 클래스
 public interface AuthorizeService {
     //authorize 엔드포인트를 통해 들어온 token 을 검증하여 추정이메일이 해당 유저의 소유임을 확인하고,
