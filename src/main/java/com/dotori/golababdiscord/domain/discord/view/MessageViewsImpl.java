@@ -21,6 +21,10 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.util.List;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Component
 @RequiredArgsConstructor
 public class MessageViewsImpl implements MessageViews{
@@ -257,10 +261,8 @@ public class MessageViewsImpl implements MessageViews{
     }
 
     public String getGraph(int percent) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < percent / 5; i++) {
-            sb.append("▉");
-        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("▉".repeat(Math.max(0, percent / 5)));
         switch(percent % 5) {
             case 4:
                 sb.append("▊");

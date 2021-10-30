@@ -6,6 +6,10 @@ import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
 import java.util.Date;
 import java.util.List;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 public interface VoteService {
     VoteDto createNewVote(MealType meal);
     InProgressVoteDto openVote(VoteDto vote);

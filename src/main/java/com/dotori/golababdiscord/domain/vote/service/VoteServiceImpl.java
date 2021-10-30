@@ -28,6 +28,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Service
 public class VoteServiceImpl implements VoteService{
     private final ApiCaller apiCaller;

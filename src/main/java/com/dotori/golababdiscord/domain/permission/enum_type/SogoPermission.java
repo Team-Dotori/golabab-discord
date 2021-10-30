@@ -12,6 +12,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @RequiredArgsConstructor
 public enum SogoPermission {
     STUDENT("학생", new RoleDto("학생", new Color(51, 217, 97)),

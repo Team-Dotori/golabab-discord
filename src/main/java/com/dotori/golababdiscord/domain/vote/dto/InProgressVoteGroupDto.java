@@ -5,6 +5,10 @@ import lombok.Getter;
 
 import java.util.*;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Getter
 public class InProgressVoteGroupDto {
     private final Date date;

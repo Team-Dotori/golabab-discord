@@ -10,6 +10,10 @@ import com.dotori.golababdiscord.domain.ranking.dto.RequestRankingDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @RequiredArgsConstructor
 @Service
 public class RankingService {
