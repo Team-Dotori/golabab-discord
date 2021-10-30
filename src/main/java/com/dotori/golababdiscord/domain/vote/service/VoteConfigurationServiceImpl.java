@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.springframework.stereotype.Service;
 
+import java.nio.channels.Channel;
+
 /*
 SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
 SPDX-License-Identifier: CC BY-NC-ND
@@ -24,12 +26,13 @@ public class VoteConfigurationServiceImpl implements VoteConfigurationService{
     private final MessageSenderService messageSenderService;
 
     @Override
-    public void changeChannel(MessageChannel channel) {
-        botProperty.setVoteChannel(channel.getIdLong());
+    public void changeChannel(long channelId) {
+        botProperty.setVoteChannel(channelId);
     }
 
     @Override
-    public void checkChannel(User user) {
+    public void checkChannel(long userId) {
+        User user = sogoBot.getUserById(userId);
         ReceiverDto receiver = new ReceiverDto(sogoBot.getVoteChannel());
         MessageDto message = messageViews.generateCheckChannelMessage(user);
 
