@@ -40,10 +40,10 @@ public class VoteChannelCommand extends LeafCommand {
     protected void run(User user, MessageChannel channel, String args) {
         if(!checkPermission(user)) throw new PermissionDeniedException(Feature.GOLABAB_MANAGE);//관리 권한이 없으면 권한 에러 발생
         if(args.equals("변경")) {//채널 변경을 요청한 경우
-            voteConfigurationService.changeChannel(channel);//채널 변경
+            voteConfigurationService.changeChannel(channel.getIdLong());//채널 변경
             sendChannelChangedMessage(channel, user);//채널 변경 완료 메시지 전송
         } else if(args.equals("확인")) {//채널 확인을 요청한 경우
-            voteConfigurationService.checkChannel(user);//채널 확인
+            voteConfigurationService.checkChannel(user.getIdLong());//채널 확인
             if(channel.getIdLong() != sogoBot.getVoteChannel().getIdLong())//현재 채널이 투표채널이 아니면
                 sendCheckChannelMessage(channel);//채널 확인 완료 메시지 전송 (투표채널에 확인메세지를 전송하였습니다!) 
         }

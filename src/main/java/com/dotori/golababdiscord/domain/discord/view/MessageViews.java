@@ -8,6 +8,10 @@ import com.dotori.golababdiscord.domain.permission.enum_type.Feature;
 import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
 import com.dotori.golababdiscord.domain.ranking.dto.RequestRankingDto;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.AuthorDto;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.EmbedMessageDto;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.FooterDto;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.TitleDto;
 import net.dv8tion.jda.api.entities.User;
 
 /*
@@ -39,4 +43,24 @@ public interface MessageViews {
     MessageDto generateCheckChannelAlarmMessage();//ex, 투표 채널에서 멘션을 보내드렸습니다!
 
     MessageDto generateRankingMessage(RequestRankingDto ranking);
+
+    static EmbedMessageDto getEmbedMessageByLegacyMessageDto(MessageDto legacyMessage) {
+        return new EmbedMessageDto(
+                -1,
+                new TitleDto(legacyMessage.getTitle().getTitle(),
+                        legacyMessage.getTitle().getUrl()),
+
+                legacyMessage.getDescription(),
+
+                legacyMessage.getColor(),
+
+                new AuthorDto(legacyMessage.getAuthor().getName(),
+                        legacyMessage.getAuthor().getUrl(),
+                        legacyMessage.getAuthor().getIconUrl()),
+
+                new FooterDto(legacyMessage.getFooter().getText(),
+                        legacyMessage.getFooter().getIconUrl())
+
+        );
+    }
 }
