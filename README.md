@@ -31,3 +31,8 @@
 - 식단표는 `lunch server` 를 통해 정보를 받아와 `discord message`로 보여준다
 
 _해당 repository 의 저작권은 코드 작성자(지인호) 에게 귀속됩니다_
+
+```
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+```
