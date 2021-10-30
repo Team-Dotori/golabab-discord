@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Component
 @RequiredArgsConstructor
 public class RoleRemoveHandler implements Handler<RoleDeleteEvent> {

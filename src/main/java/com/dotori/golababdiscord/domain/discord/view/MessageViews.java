@@ -10,6 +10,10 @@ import com.dotori.golababdiscord.domain.ranking.dto.RequestRankingDto;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
 import net.dv8tion.jda.api.entities.User;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 public interface MessageViews {
     //Command
     MessageDto generateWrongCommandUsageMessage(WrongCommandUsageType usageType, String args, String usage);

@@ -20,6 +20,10 @@ import net.dv8tion.jda.api.entities.User;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Component
 @Slf4j
 public class RootCommand extends Command{

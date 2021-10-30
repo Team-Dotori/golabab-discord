@@ -11,6 +11,10 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.springframework.stereotype.Service;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Service
 @RequiredArgsConstructor
 public class VoteConfigurationServiceImpl implements VoteConfigurationService{

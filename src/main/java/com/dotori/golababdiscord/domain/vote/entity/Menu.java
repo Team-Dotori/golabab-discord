@@ -4,6 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @NoArgsConstructor
 @Getter @Setter
 @Entity

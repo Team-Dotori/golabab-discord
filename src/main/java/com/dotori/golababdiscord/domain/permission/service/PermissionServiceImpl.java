@@ -8,6 +8,10 @@ import com.dotori.golababdiscord.global.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Service
 @RequiredArgsConstructor
 public class PermissionServiceImpl implements PermissionService{

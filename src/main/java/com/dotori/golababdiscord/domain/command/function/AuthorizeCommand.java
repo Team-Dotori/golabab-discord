@@ -14,6 +14,10 @@ import net.dv8tion.jda.api.entities.User;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 public class AuthorizeCommand extends LeafCommand {
     private final MailService mailService;
     private final MessageSenderService messageSenderService;

@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Date;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -34,7 +38,7 @@ public class VoteSchedulerImpl implements VoteScheduler{
         voteService.closeVote(group);
         voteService.sendVoteResult(result);
     }
-    private InProgressVoteGroupDto createInProgressVoteGroupByDay(Date today) {        ;
+    private InProgressVoteGroupDto createInProgressVoteGroupByDay(Date today) {
         return new InProgressVoteGroupDto(voteService.getInProgressVotes(today)/*breakfast, lunch, dinner*/);
     }
 

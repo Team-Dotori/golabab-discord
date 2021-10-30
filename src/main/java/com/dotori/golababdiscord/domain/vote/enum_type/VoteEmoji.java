@@ -8,6 +8,10 @@ import net.dv8tion.jda.api.entities.MessageReaction;
 import java.util.Arrays;
 import java.util.Optional;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @RequiredArgsConstructor
 @Getter
 public enum VoteEmoji {
