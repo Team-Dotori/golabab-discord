@@ -1,12 +1,11 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.4'
+	id 'org.springframework.boot' version '2.5.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
 
 group = 'com.dotori'
 version = '1.0.0-RELEASE'
-sourceCompatibility = '11'
 
 
 repositories {
@@ -37,12 +36,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.thedeanda/lorem
 	testImplementation 'com.thedeanda:lorem:2.1'
 	// https://mvnrepository.com/artifact/org.mockito/mockito-inline
-	testImplementation 'org.mockito:mockito-inline:3.12.4'
+	testImplementation 'org.mockito:mockito-inline:4.0.0'
 	implementation("net.dv8tion:JDA:4.3.0_324")
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 	//Cacophony Library
-	//implementation 'io.github.key-del-jeeinho:cacophony-spring-boot-starter:1.0.3-RELEASE'
+	implementation 'io.github.key-del-jeeinho:cacophony-spring-boot-starter:1.0.7-RELEASE'
 }
 
 test {

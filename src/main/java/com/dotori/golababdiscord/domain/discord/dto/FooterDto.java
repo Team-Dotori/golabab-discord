@@ -13,5 +13,5 @@ SPDX-License-Identifier: CC BY-NC-ND
 @Getter
 public class FooterDto {
     private final String text;
-    private String iconUrl;
+    private String iconUrl = null;
 }
