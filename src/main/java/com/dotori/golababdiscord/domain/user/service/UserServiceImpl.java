@@ -19,7 +19,8 @@ public class UserServiceImpl implements UserService{
     private final SogoBot sogoBot;
 
     @Override
-    public UserDto getUserDto(User user) {
+    public UserDto getUserDto(long userId) {
+        User user = sogoBot.getUserById(userId);
         com.dotori.golababdiscord.domain.user.entity.User entity = userRepository.getById(user.getIdLong());
         if(entity == null) throw new UserNotEnrolledException();
         return new UserDto(entity.getId(), entity.getName(), entity.getEmail(), entity.getDepartmentType(), entity.getPermission());
