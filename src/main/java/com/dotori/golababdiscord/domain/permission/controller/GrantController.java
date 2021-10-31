@@ -23,7 +23,7 @@ public class GrantController {
     private final SogoBot sogoBot;
     @GetMapping("/grant-permission")
     public void grantPermission(@RequestParam SogoPermission permission, @RequestParam Long discordId) {
-        UserDto user = userService.getUserDto(sogoBot.getUserById(discordId));
+        UserDto user = userService.getUserDto(sogoBot.getUserById(discordId).getIdLong());
         permissionService.grantPermission(user, permission);
     }
 }

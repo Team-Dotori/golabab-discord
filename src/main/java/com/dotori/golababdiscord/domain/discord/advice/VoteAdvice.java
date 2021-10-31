@@ -45,7 +45,7 @@ public class VoteAdvice {
             messageSenderService.sendMessage(receiver, message);
         } catch (PermissionDeniedException e) {
             MessageDto message = messageViews.generatePermissionDeniedMessage(
-                    userService.getUserDto(event.getUser()).getPermission(), e.getFeature());
+                    userService.getUserDto(event.getUser().getIdLong()).getPermission(), e.getFeature());
             messageSenderService.sendMessage(receiver, message);
         } catch (AlreadyVoteException e) {
             MessageDto message = messageViews.generateAlreadyVoteMessage();

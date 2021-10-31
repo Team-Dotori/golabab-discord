@@ -51,7 +51,7 @@ public class VoteChannelCommand extends LeafCommand {
 
     //관리 권한이 있는지 확인하는 메소드
     private boolean checkPermission(User user) {
-        SogoPermission permission = userService.getUserDto(user).getPermission();//유저의 권한을 가져옴
+        SogoPermission permission = userService.getUserDto(user.getIdLong()).getPermission();//유저의 권한을 가져옴
         return permission.isHaveFeature(Feature.GOLABAB_MANAGE);//관리 권한 소유 여부를 반환
     }
 

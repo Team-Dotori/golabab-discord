@@ -61,7 +61,7 @@ public class CommandAdvice {
             PrivateChannel channel = user.openPrivateChannel().complete();//유저의 비공개 채널을 연다
             ReceiverDto receiver = new ReceiverDto(channel);//메세지를 송신할 채널을 설정한다
             MessageDto message = messageViews.generatePermissionDeniedMessage(//권한 부족으로 인한 오류메세지를 생성한다
-                    userService.getUserDto(user).getPermission(), e.getFeature());//사용자의 권한과 사용자가 사용한 기능을 받아옴
+                    userService.getUserDto(user.getIdLong()).getPermission(), e.getFeature());//사용자의 권한과 사용자가 사용한 기능을 받아옴
             messageSenderService.sendMessage(receiver, message);//메세지를 전송한다
         } catch (Throwable throwable) {//그이외의 오류가 발생할경우
             throwable.printStackTrace();//오류를 출력한다

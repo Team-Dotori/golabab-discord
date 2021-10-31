@@ -30,7 +30,7 @@ public class VoteHandler implements Handler<GuildMessageReactionAddEvent>{
     public void handleEvent(GuildMessageReactionAddEvent event) {
         if(passed(event)) return;
 
-        UserDto voter = userService.getUserDto(event.getUser());
+        UserDto voter = userService.getUserDto(event.getUser().getIdLong());
         Message voteMessage = event.retrieveMessage().complete();
 
         if(!isVoterHavePermission(voter)) throw new PermissionDeniedException(Feature.GOLABAB_VOTE); //sendPermissionDeniedMessage(event);
