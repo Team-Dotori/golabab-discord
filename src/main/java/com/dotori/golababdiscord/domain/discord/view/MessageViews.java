@@ -8,10 +8,7 @@ import com.dotori.golababdiscord.domain.permission.enum_type.Feature;
 import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
 import com.dotori.golababdiscord.domain.ranking.dto.RequestRankingDto;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
-import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.AuthorDto;
-import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.EmbedMessageDto;
-import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.FooterDto;
-import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.TitleDto;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.*;
 import net.dv8tion.jda.api.entities.User;
 
 /*
@@ -45,7 +42,7 @@ public interface MessageViews {
     MessageDto generateRankingMessage(RequestRankingDto ranking);
 
     static EmbedMessageDto getEmbedMessageByLegacyMessageDto(MessageDto legacyMessage) {
-        return new EmbedMessageDto(
+        EmbedMessageDto message = new EmbedMessageDto(
                 -1,
                 new TitleDto(legacyMessage.getTitle().getTitle(),
                         legacyMessage.getTitle().getUrl()),
@@ -62,5 +59,7 @@ public interface MessageViews {
                         legacyMessage.getFooter().getIconUrl())
 
         );
+        legacyMessage.getSections().forEach(section -> message.addSection(new SectionDto(section.getTitle(), section.getText(), section.getInline())));
+        return message;
     }
 }
