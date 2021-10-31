@@ -1,13 +1,13 @@
-package com.dotori.golababdiscord.domain.cacophony.command;
+package com.dotori.golababdiscord.domain.command;
 
 import com.dotori.golababdiscord.domain.authorize.exception.DepartmentNotFoundException;
-import com.dotori.golababdiscord.domain.cacophony.action.AuthorizeAction;
-import com.dotori.golababdiscord.domain.cacophony.action.VoteChannelAction;
-import com.dotori.golababdiscord.domain.cacophony.action.VoteOpenAction;
-import com.dotori.golababdiscord.domain.cacophony.advice.AuthorizeCommandAdvice;
-import com.dotori.golababdiscord.domain.cacophony.advice.VoteCommandAdvice;
-import com.dotori.golababdiscord.domain.cacophony.advice.VoteChannelCommandAdvice;
-import com.dotori.golababdiscord.domain.cacophony.exception.WrongArgumentException;
+import com.dotori.golababdiscord.domain.command.action.AuthorizeAction;
+import com.dotori.golababdiscord.domain.command.action.VoteChannelAction;
+import com.dotori.golababdiscord.domain.command.action.VoteOpenAction;
+import com.dotori.golababdiscord.domain.command.advice.AuthorizeCommandAdvice;
+import com.dotori.golababdiscord.domain.command.advice.VoteCommandAdvice;
+import com.dotori.golababdiscord.domain.command.advice.VoteChannelCommandAdvice;
+import com.dotori.golababdiscord.domain.command.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;
 import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
 import io.github.key_del_jeeinho.cacophony_lib.domain.command.RootCommandGenerator;
@@ -46,28 +46,28 @@ public class CommandDefiner {
         this.voteChannelAdvice = voteChannelAdvice;
         RootCommandGenerator.init(commandManager);
 
-        root("라밥이",
-                //라밥이 인증
+        root("라밥아",
+                //라밥아 인증
                 command("인증",
                         action(this::authorize)
                 ).whenThrow(WrongArgumentException.class, this::handleWrongArgumentException)
                         .whenThrow(DepartmentNotFoundException.class, this::handleDepartmentNotFoundException),
-                //라밥이 투표
+                //라밥아 투표
                 command("투표",
-                        //라밥이 투표 열기
+                        //라밥아 투표 열기
                         command("열기",
-                                //라밥이 투표 열기 조식
+                                //라밥아 투표 열기 조식
                                 command("조식", action((a, user) -> openVote(MealType.BREAKFAST, user))),
-                                //라밥이 투표 열기 중식
+                                //라밥아 투표 열기 중식
                                 command("중식", action((a, user) -> openVote(MealType.LUNCH, user))),
-                                //라밥이 투표 열기 석식
+                                //라밥아 투표 열기 석식
                                 command("석식", action((a, user) -> openVote(MealType.DINNER, user)))
                         ),
-                        //라밥이 투표 채널
+                        //라밥아 투표 채널
                         command("채널",
-                                //라밥이 투표 채널 확인
+                                //라밥아 투표 채널 확인
                                 command("확인", action(this::checkVoteChannel)),
-                                //라밥이 투표 채널 변경
+                                //라밥아 투표 채널 변경
                                 command("변경", action(this::changeVoteChannel))
                         )
                 ).whenThrow(PermissionDeniedException.class, this::handlePermissionDeniedException)

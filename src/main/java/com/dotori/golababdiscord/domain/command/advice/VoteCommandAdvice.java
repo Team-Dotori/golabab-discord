@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.cacophony.advice;
+package com.dotori.golababdiscord.domain.command.advice;
 
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;

@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.cacophony.exception;
+package com.dotori.golababdiscord.domain.command.exception;
 
 import io.github.key_del_jeeinho.cacophony_lib.domain.command.component.Argument;
 import lombok.Getter;

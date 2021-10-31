@@ -1,9 +1,9 @@
-package com.dotori.golababdiscord.domain.cacophony.action;
+package com.dotori.golababdiscord.domain.command.action;
 
 import com.dotori.golababdiscord.domain.authorize.dto.DomainValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.dto.UnValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
-import com.dotori.golababdiscord.domain.cacophony.exception.WrongArgumentException;
+import com.dotori.golababdiscord.domain.command.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
 import com.dotori.golababdiscord.infra.service.MailService;

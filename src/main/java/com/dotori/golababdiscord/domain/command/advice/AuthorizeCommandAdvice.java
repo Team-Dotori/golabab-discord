@@ -1,8 +1,8 @@
-package com.dotori.golababdiscord.domain.cacophony.advice;
+package com.dotori.golababdiscord.domain.command.advice;
 
 import com.dotori.golababdiscord.domain.authorize.enum_type.FailureReason;
 import com.dotori.golababdiscord.domain.authorize.exception.DepartmentNotFoundException;
-import com.dotori.golababdiscord.domain.cacophony.exception.WrongArgumentException;
+import com.dotori.golababdiscord.domain.command.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.enum_type.WrongCommandUsageType;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;

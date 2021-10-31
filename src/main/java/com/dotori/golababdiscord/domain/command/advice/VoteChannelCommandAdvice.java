@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.cacophony.advice;
+package com.dotori.golababdiscord.domain.command.advice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

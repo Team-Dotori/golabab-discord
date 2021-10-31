@@ -1,4 +1,4 @@
-package com.dotori.golababdiscord.domain.cacophony.action;
+package com.dotori.golababdiscord.domain.command.action;
 
 import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;
