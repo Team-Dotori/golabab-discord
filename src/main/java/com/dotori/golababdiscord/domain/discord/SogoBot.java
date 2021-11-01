@@ -4,11 +4,18 @@ import com.dotori.golababdiscord.domain.discord.exception.BotBuildingFailureExce
 import com.dotori.golababdiscord.domain.discord.exception.UserNotFoundException;
 import com.dotori.golababdiscord.domain.discord.exception.VoteChannelNotFoundException;
 import com.dotori.golababdiscord.domain.discord.property.BotProperty;
+import com.neovisionaries.ws.client.ProxySettings;
+import io.github.key_del_jeeinho.cacophony_lib.global.exception.ChannelNotFoundException;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.EventListener;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
 SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
@@ -48,7 +55,7 @@ public class SogoBot {
         return channel;
     }
 
-    public Message getMessageById(Long voteMessageId) {
+    public Message getVoteMessageById(Long voteMessageId) {
         return getVoteChannel().retrieveMessageById(voteMessageId).complete();
     }
 

@@ -2,7 +2,6 @@ package com.dotori.golababdiscord.domain.vote.service;
 
 import com.dotori.golababdiscord.domain.api.dto.RequestCollectedVoteDto;
 import com.dotori.golababdiscord.domain.api.dto.ResponseMealMenuDto;
-import com.dotori.golababdiscord.domain.api.service.VoteApiService;
 import com.dotori.golababdiscord.domain.api.service.caller.ApiCaller;
 import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
@@ -88,7 +87,7 @@ public class VoteServiceImpl implements VoteService{
 
     private VoteResultDto calculateMealVoteResult(InProgressVoteDto dto) {
         VoteResultDto result = new VoteResultDto();
-        Message message = sogoBot.getMessageById(dto.getVoteMessageId());
+        Message message = sogoBot.getVoteMessageById(dto.getVoteMessageId());
 
         message.getReactions().forEach(reaction -> { //모든 종류의 반응을 불러와 reaction 에 하나씩 담는다
             Arrays.stream(VoteEmoji.values())
@@ -108,7 +107,7 @@ public class VoteServiceImpl implements VoteService{
     }
     private void close(InProgressVoteDto dto) {
         Long messageId = dto.getVoteMessageId();
-        Message message = sogoBot.getMessageById(messageId);
+        Message message = sogoBot.getVoteMessageById(messageId);
 
         messageSenderService.clearReactions(message);
         messageSenderService.editMessageToClose(message, messageViews.generateVoteClosedMessage());

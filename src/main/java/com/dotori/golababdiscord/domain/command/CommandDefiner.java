@@ -18,7 +18,6 @@ import io.github.key_del_jeeinho.cacophony_lib.global.dto.UserDto;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
-import static io.github.key_del_jeeinho.cacophony_lib.domain.action.ActionEntry.chat;
 import static io.github.key_del_jeeinho.cacophony_lib.domain.command.CommandEntry.*;
 
 /*

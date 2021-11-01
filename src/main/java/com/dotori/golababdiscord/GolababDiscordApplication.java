@@ -1,6 +1,9 @@
 package com.dotori.golababdiscord;
 
+import com.dotori.golababdiscord.domain.discord.SogoBot;
 import io.github.key_del_jeeinho.cacophony_lib.autoconfigure.UseCacophony;
+import net.dv8tion.jda.api.JDA;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
