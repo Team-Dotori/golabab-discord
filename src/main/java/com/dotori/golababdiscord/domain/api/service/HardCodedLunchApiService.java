@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class HardCodedLunchApiService implements LunchApiService {
     private final ApiService<String> apiService;
@@ -28,11 +28,10 @@ public class HardCodedLunchApiService implements LunchApiService {
     @Override
     public ResponseDayMenuDto getMealsToday() {
         ResponseEntity<String> response =
-                apiService.get(lunchApiProperty.getBaseUrl() + ":" +  lunchApiProperty.getPort() + "/api/v1/meals/today", String.class);
+                apiService.get(lunchApiProperty.getBaseUrl() + ":" +  lunchApiProperty.getPort() + "/api/v1/meals/get-meals-today", String.class);
         if(response.getStatusCode().equals(HttpStatus.OK)) {
             String responseStr = response.getBody();
-            ResponseDayMenuDto result = mapToDto(responseStr);
-            return result;
+            return mapToDto(responseStr);
         }
         else throw new ApiException(response.getStatusCode());
     }
@@ -56,16 +55,12 @@ public class HardCodedLunchApiService implements LunchApiService {
 
     @Override
     public ResponseMealMenuDto getMealToday(MealType meal) {
-        switch(meal) {
-            case BREAKFAST:
-                return getMealsToday().getBreakfast();
-            case LUNCH:
-                return getMealsToday().getLunch();
-            case DINNER:
-                return getMealsToday().getDinner();
-            default:
-                throw new MealTypeNotFoundException(meal);
-        }
+        return switch(meal) {
+            case BREAKFAST -> getMealsToday().getBreakfast();
+            case LUNCH -> getMealsToday().getLunch();
+            case DINNER -> getMealsToday().getDinner();
+            default -> throw new MealTypeNotFoundException(meal);
+        };
     }
 
     @Override

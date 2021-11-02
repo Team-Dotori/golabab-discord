@@ -1,45 +1,51 @@
-package com.dotori.golababdiscord.domain.vote.scheduler;
+package com.dotori.golababdiscord.obt;
 
-import com.dotori.golababdiscord.domain.vote.dto.*;
+import com.dotori.golababdiscord.domain.vote.dto.InProgressVoteDto;
+import com.dotori.golababdiscord.domain.vote.dto.InProgressVoteGroupDto;
+import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
+import com.dotori.golababdiscord.domain.vote.dto.VoteResultGroupDto;
 import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
+import com.dotori.golababdiscord.domain.vote.scheduler.VoteScheduler;
 import com.dotori.golababdiscord.domain.vote.service.VoteService;
 import com.dotori.golababdiscord.global.utils.DateUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Date;
 
-//@Component
-@RequiredArgsConstructor
+@Component
 @Slf4j
-public class VoteSchedulerImpl implements VoteScheduler{
-    private final DateUtils dateUtils;
+public class OBTVoteSchedulerImpl implements VoteScheduler {
+    private final OBTDateUtils dateUtils;
     private final VoteService voteService;
-    private static final String BREAKFAST_VOTE_CRON = "0 " + 20 + " " + 8 + " * * MON-FRI"; //오전 8시 20분
-    private static final String LUNCH_VOTE_CRON = "0 " + 20 + " " + 13 + " * * MON-FRI"; //오후 1시 20분
-    private static final String DINNER_VOTE_CRON = "0 " + 20 + " " + 19 + " * * MON-FRI"; //오후 7시 20분
-    private static final String COLLECT_VOTE_CRON = "0 " + 0 + " " + 23 + " * * MON-FRI"; //오후 11시 00분
+    private final Date today;
+    private static final int MINUTE = 60000;
+
+    @Lazy
+    public OBTVoteSchedulerImpl(OBTDateUtils dateUtils, VoteService voteService) {
+        this.dateUtils = dateUtils;
+        this.voteService = voteService;
+        this.today = dateUtils.getToday();
+    }
 
     @Override
-    @Scheduled(cron=COLLECT_VOTE_CRON)
+    @Scheduled(initialDelay = MINUTE * 3, fixedRate = MINUTE *4)
     public void collectVote() {
-        Date today = dateUtils.getToday();
-
         InProgressVoteGroupDto group = createInProgressVoteGroupByDay(today);
         VoteResultGroupDto result = voteService.calculateVoteResult(group);
 
         voteService.closeVote(group);
         voteService.sendVoteResult(result);
+        dateUtils.nextDay();
     }
     private InProgressVoteGroupDto createInProgressVoteGroupByDay(Date today) {        ;
         return new InProgressVoteGroupDto(voteService.getInProgressVotes(today)/*breakfast, lunch, dinner*/);
     }
 
     @Override
-    @Scheduled(cron=BREAKFAST_VOTE_CRON)
+    @Scheduled(initialDelay = 0, fixedRate = MINUTE *4)
     public void openBreakfastVote() {
         VoteDto breakfastVote = voteService.createNewVote(MealType.BREAKFAST);
         InProgressVoteDto breakfast = voteService.openVote(breakfastVote);
@@ -51,7 +57,7 @@ public class VoteSchedulerImpl implements VoteScheduler{
     }
 
     @Override
-    @Scheduled(cron=LUNCH_VOTE_CRON)
+    @Scheduled(initialDelay = MINUTE, fixedRate = MINUTE *4)
     public void openLunchVote() {
         VoteDto lunchVote = voteService.createNewVote(MealType.LUNCH);
         InProgressVoteDto lunch = voteService.openVote(lunchVote);
@@ -60,7 +66,7 @@ public class VoteSchedulerImpl implements VoteScheduler{
     }
 
     @Override
-    @Scheduled(cron=DINNER_VOTE_CRON)
+    @Scheduled(initialDelay = MINUTE * 2, fixedRate = MINUTE *4)
     public void openDinnerVote() {
         VoteDto dinnerVote = voteService.createNewVote(MealType.DINNER);
         InProgressVoteDto dinner = voteService.openVote(dinnerVote);

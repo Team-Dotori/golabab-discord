@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@Component
+//@Component
 public class DateUtilsImpl implements DateUtils{
     @Override
     public Date getToday() {

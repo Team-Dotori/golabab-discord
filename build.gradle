@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.dotori'
 version = '1.0.0-RELEASE'
-sourceCompatibility = '11'
+sourceCompatibility = "14"
 
 
 repositories {
@@ -48,3 +48,4 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_14
