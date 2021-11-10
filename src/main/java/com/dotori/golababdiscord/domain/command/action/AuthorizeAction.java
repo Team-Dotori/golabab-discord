@@ -5,7 +5,9 @@ import com.dotori.golababdiscord.domain.authorize.dto.UnValidatedUserDto;
 import com.dotori.golababdiscord.domain.authorize.service.AuthorizeService;
 import com.dotori.golababdiscord.domain.command.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
+import com.dotori.golababdiscord.domain.discord.property.BotProperty;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
+import com.dotori.golababdiscord.domain.message.MessageFactory;
 import com.dotori.golababdiscord.infra.service.MailService;
 import io.github.key_del_jeeinho.cacophony_lib.domain.command.component.Argument;
 import io.github.key_del_jeeinho.cacophony_lib.global.dto.ChannelDto;
@@ -30,11 +32,12 @@ SPDX-License-Identifier: CC BY-NC-ND
 public class AuthorizeAction {
     private final MailService mailService;//메일 서비스
     private final AuthorizeService authorizeService;//사용자 인증 서비스
-    private final MessageViews messageViews;//메시지 뷰
+    private final MessageFactory messageFactory;//메시지 뷰
     private final SpringTemplateEngine templateEngine;//템플릿 엔진
+    private final BotProperty botProperty;
 
     public void authorize(Argument argument, UserDto author, ChannelDto channel) {
-        if(!checkArgs(argument)) throw new WrongArgumentException(argument, "소고야 인증 <실명> <이메일>");//잘못된 인자를 받았을 경우 예외를 발생시킨다
+        if(!checkArgs(argument)) throw new WrongArgumentException(argument, botProperty.getCommandPrefix() + " 인증 <실명> <이메일>");//잘못된 인자를 받았을 경우 예외를 발생시킨다
 
         UnValidatedUserDto unValidatedUser = getUnValidatedUser(author, argument);//사용자 정보를 받아온다
         DomainValidatedUserDto domainValidatedUser = validateDomain(unValidatedUser, argument);//이메일 도메인을 인증한다
@@ -88,10 +91,7 @@ public class AuthorizeAction {
 
     //인증 메일 확인을 요청하는 메세지를 보내는 메서드
     private void sendRequestCheckMailMessage(DomainValidatedUserDto domainValidatedUser, ChannelDto channel) {
-        MessageDto legacyMessage = messageViews.generateMailSentMessage(domainValidatedUser);
-
-        //TODO 2021.10.30 메세지 로직 개편 후 삭제 JeeInho
-        EmbedMessageDto message = MessageViews.getEmbedMessageByLegacyMessageDto(legacyMessage);//불러온 레거시 메세지를 현재 스펙의 메세지로 치환한다(Message 로직 리펙터링 후 제거예정)
+        EmbedMessageDto message = messageFactory.generateMailSentMessage(domainValidatedUser);
         chat(message, channel.getId());//인증 메일 확인 요청 메세지를 송신한다
     }
 

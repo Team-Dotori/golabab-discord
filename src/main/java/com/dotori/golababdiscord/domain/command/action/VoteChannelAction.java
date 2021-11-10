@@ -4,6 +4,7 @@ import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
+import com.dotori.golababdiscord.domain.message.MessageFactory;
 import com.dotori.golababdiscord.domain.permission.enum_type.Feature;
 import com.dotori.golababdiscord.domain.permission.enum_type.SogoPermission;
 import com.dotori.golababdiscord.domain.user.service.UserService;
@@ -27,7 +28,7 @@ SPDX-License-Identifier: CC BY-NC-ND
 public class VoteChannelAction {
     private final VoteConfigurationService voteConfigurationService;//투표 환경설정 서비스
     private final UserService userService;
-    private final MessageViews messageViews;
+    private final MessageFactory messageFactory;
     private final SogoBot sogoBot;
 
     public void changeVoteChannel(Argument argument, UserDto author, ChannelDto channel) {
@@ -48,19 +49,13 @@ public class VoteChannelAction {
     //채널 변경 완료 메시지를 전송하는 메소드
     private void sendChannelChangedMessage(long channelId, long userId) {
         User user = sogoBot.getUserById(userId);
-        MessageDto legacyMessage = messageViews.generateChannelChangedMessage(user);//채널 변경 확인 메세지를 불러온다
-
-        //TODO 2021.10.30 메세지 로직 개편 후 삭제 JeeInho
-        EmbedMessageDto message = MessageViews.getEmbedMessageByLegacyMessageDto(legacyMessage);//불러온 레거시 메세지를 현재 스펙의 메세지로 치환한다(Message 로직 리펙터링 후 제거예정)
+        EmbedMessageDto message = messageFactory.generateChannelChangedMessage(user);//채널 변경 확인 메세지를 불러온다
         chat(message, channelId);//채팅 전송
     }
 
     //채널 확인 완료 메세지를 전송하는 메서드
     private void sendCheckChannelMessage(long channelId) {
-        MessageDto legacyMessage = messageViews.generateCheckChannelAlarmMessage();//채널 확인 완료 메세지를 전송한다
-
-        //TODO 2021.10.30 메세지 로직 개편 후 삭제 JeeInho
-        EmbedMessageDto message = MessageViews.getEmbedMessageByLegacyMessageDto(legacyMessage);//불러온 레거시 메세지를 현재 스펙의 메세지로 치환한다(Message 로직 리펙터링 후 제거예정)
+        EmbedMessageDto message = messageFactory.generateCheckChannelAlarmMessage();//채널 확인 완료 메세지를 전송한다
         chat(message, channelId);//메세지를 전송한다
     }
 
