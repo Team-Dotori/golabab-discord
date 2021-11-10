@@ -86,7 +86,7 @@ public class AuthorizeAction {
         context.setVariable("link", authorizeLink);//인증링크
         context.setVariable("name", name);//사용자 이름
 
-        return templateEngine.process("discord/authorize/authorize-mail", context);//템플릿 엔진을 통해 html 형식의 메일 내용을 가져와 반환한다
+        return templateEngine.process("authorize/authorize-mail", context);//템플릿 엔진을 통해 html 형식의 메일 내용을 가져와 반환한다
     }
 
     //인증 메일 확인을 요청하는 메세지를 보내는 메서드

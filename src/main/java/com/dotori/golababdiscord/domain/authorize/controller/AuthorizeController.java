@@ -7,14 +7,17 @@ import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.enroll.exception.AlreadyEnrolledException;
 import com.dotori.golababdiscord.domain.enroll.service.EnrollService;
 import com.dotori.golababdiscord.domain.message.MessageFactory;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.ChannelDto;
+import io.github.key_del_jeeinho.cacophony_lib.global.exception.ChannelNotFoundException;
 import lombok.RequiredArgsConstructor;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static io.github.key_del_jeeinho.cacophony_lib.domain.action.ActionEntry.chat;
+import static io.github.key_del_jeeinho.cacophony_lib.domain.converter.ConverterEntry.userToDM;
 
 /*
 SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
@@ -36,13 +39,22 @@ public class AuthorizeController {
         enrollService.checkEnrollCondition(validatedUser.toUserDto());//이미 가입된 유저인지 검증한다
         sendAuthorizedMessage(validatedUser.getDiscordId());//가입조건을 충족하면, 가입완료 메시지를 보낸다
         enrollService.enroll(validatedUser.toUserDto());//가입로직을 수행한다
-        return "discord/authorize/authorized";//가입완료 페이지로 이동한다
+        return "authorize/authorized";//가입완료 페이지로 이동한다
     }
 
     //가입조건을 충족하면, 가입완료 메시지를 보낸다
     private void sendAuthorizedMessage(Long discordId) {
-        MessageChannel channel = sogoBot.getPrivateChannelByUserId(discordId);
-        chat(messageFactory.generateAuthorizedMessage(), channel.getIdLong());
+        //TODO sendMessageEmbeds 와 chat 의 차이 생각해보기 (아마 chat 에서 getPrivateChannelById 에서 문제가 생기는게 아닐까?)
+        ChannelDto channel = userToDM(discordId);
+        chat(messageFactory.generateAuthorizedMessage(), channel.getId());
+        /*
+        System.out.println(channel);
+        System.out.println(channel.getIdLong());
+        try {
+            chat(messageFactory.generateAuthorizedMessage(), channel.getIdLong());
+        } catch (ChannelNotFoundException e) {
+            System.out.println(e.getChannelId());
+        }*/
     }
 
     //TODO 2021.10.29 가입조건을 충족하지 못할경우 발생하는 EnrollFailureException 을 만들고 AlredyEnrolledException 을 해당 예외의 하위예외로 구현한다 JeeInho
@@ -50,10 +62,10 @@ public class AuthorizeController {
     @ExceptionHandler(AlreadyEnrolledException.class)
     public String handleAlreadyEnrolledException(AlreadyEnrolledException e) {
         Long discordId = e.getUser().getDiscordId();//유저의 Discord ID를 가져온다
-        MessageChannel channel = sogoBot.getPrivateChannelByUserId(discordId);//Discord ID를 통해 개인채널을 가져온다
+        ChannelDto channel = userToDM(discordId);
         //가져온 개인채널에 가입실패 메시지를 보낸다
         chat(messageFactory.generateAuthorizeFailureMessage(FailureReason.ALREADY_ENROLLED), //이미 가입된 유저 인 경우 FailureReason.ALREADY_ENROLLED 을 사용한다
-                channel.getIdLong());
+                channel.getId());
         return "discord/enroll/error/already-enrolled";//가입실패(AlreadyEnrolled) 페이지로 이동한다
     }
 }

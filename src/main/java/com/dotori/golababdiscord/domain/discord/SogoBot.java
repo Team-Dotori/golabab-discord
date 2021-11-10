@@ -38,7 +38,7 @@ public class SogoBot {
     public void addEventListener(EventListener listener) {
         jda.addEventListener(listener);
     }
-    public MessageChannel getPrivateChannelByUserId(Long userId) {
+    public PrivateChannel getPrivateChannelByUserId(Long userId) {
         return getUserById(userId).openPrivateChannel().complete();
     }
 
