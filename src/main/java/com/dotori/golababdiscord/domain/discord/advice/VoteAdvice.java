@@ -1,13 +1,11 @@
 package com.dotori.golababdiscord.domain.discord.advice;
 
-import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
-import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.exception.AlreadyVoteException;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;
-import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
-import com.dotori.golababdiscord.domain.discord.view.MessageViews;
+import com.dotori.golababdiscord.domain.message.MessageFactory;
 import com.dotori.golababdiscord.domain.user.exception.UserNotEnrolledException;
 import com.dotori.golababdiscord.domain.user.service.UserService;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.EmbedMessageDto;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
@@ -17,6 +15,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
+import static io.github.key_del_jeeinho.cacophony_lib.domain.action.ActionEntry.chat;
+
 /*
 SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
 SPDX-License-Identifier: CC BY-NC-ND
@@ -25,8 +25,7 @@ SPDX-License-Identifier: CC BY-NC-ND
 @Aspect
 @RequiredArgsConstructor
 public class VoteAdvice {
-    private final MessageSenderService messageSenderService;
-    private final MessageViews messageViews;
+    private final MessageFactory messageFactory;
     private final UserService userService;
 
     @Around("execution(void com.dotori.golababdiscord.domain.discord.listeners.handler.VoteHandler.handleEvent(*))")
@@ -34,22 +33,21 @@ public class VoteAdvice {
         GuildMessageReactionAddEvent event = (GuildMessageReactionAddEvent) pjp.getArgs()[0];
 
         PrivateChannel channel = event.getUser().openPrivateChannel().complete();
-        ReceiverDto receiver = new ReceiverDto(channel);
 
         boolean isThrowException = true;
         try {
             pjp.proceed();
             isThrowException = false;
         } catch (UserNotEnrolledException e) {
-            MessageDto message = messageViews.generateRequestAuthorizeMessage();
-            messageSenderService.sendMessage(receiver, message);
+            EmbedMessageDto message = messageFactory.generateRequestAuthorizeMessage();
+            chat(message, channel.getIdLong());
         } catch (PermissionDeniedException e) {
-            MessageDto message = messageViews.generatePermissionDeniedMessage(
+            EmbedMessageDto message = messageFactory.generatePermissionDeniedMessage(
                     userService.getUserDto(event.getUser().getIdLong()).getPermission(), e.getFeature());
-            messageSenderService.sendMessage(receiver, message);
+            chat(message, channel.getIdLong());
         } catch (AlreadyVoteException e) {
-            MessageDto message = messageViews.generateAlreadyVoteMessage();
-            messageSenderService.sendMessage(receiver, message);
+            EmbedMessageDto message = messageFactory.generateAlreadyVoteMessage();
+            chat(message, channel.getIdLong());
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

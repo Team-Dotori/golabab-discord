@@ -72,6 +72,7 @@ public class VoteServiceImpl implements VoteService{
     private Long sendVoteMessageAndGetId(VoteDto vote) {
         TextChannel channel = sogoBot.getVoteChannel();
 
+        //TODO Cacophony 의 chat 메서드가 보낸 메세지의 id 를 반환할 수 있을 때 해당 로직을 Cacophony base 로 교체
         MessageDto message = messageViews.generateVoteOpenedMessage(vote);
         ReceiverDto receiver = new ReceiverDto(channel);
 
