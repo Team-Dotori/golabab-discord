@@ -38,6 +38,6 @@ public class TipticSchedulerImpl implements TipticScheduler{
 
         EmbedMessageDto message = messageFactory.generateTipticMessage(tiptic);
 
-        chat(message, sogoBot.getVoteChannel().getIdLong());
+        chat(message, sogoBot.getVoteChannelId());
     }
 }

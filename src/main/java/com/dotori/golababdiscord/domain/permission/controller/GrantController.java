@@ -20,10 +20,9 @@ SPDX-License-Identifier: CC BY-NC-ND
 public class GrantController {
     private final UserService userService;
     private final PermissionService permissionService;
-    private final SogoBot sogoBot;
     @GetMapping("/grant-permission")
     public void grantPermission(@RequestParam SogoPermission permission, @RequestParam Long discordId) {
-        UserDto user = userService.getUserDto(sogoBot.getUserById(discordId).getIdLong());
+        UserDto user = userService.getUserDto(discordId);
         permissionService.grantPermission(user, permission);
     }
 }

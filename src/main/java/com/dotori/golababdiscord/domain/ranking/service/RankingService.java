@@ -24,6 +24,6 @@ public class RankingService {
     public void sendResult2Weeks() {
         RequestRankingDto ranking = apiCaller.getRanking(0, 19);
         EmbedMessageDto message = messageFactory.generateRankingMessage(ranking);
-        chat(message, sogoBot.getVoteChannel().getIdLong());
+        chat(message, sogoBot.getVoteChannelId());
     }
 }

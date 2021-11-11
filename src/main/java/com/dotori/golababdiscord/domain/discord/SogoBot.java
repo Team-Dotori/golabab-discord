@@ -38,9 +38,6 @@ public class SogoBot {
     public void addEventListener(EventListener listener) {
         jda.addEventListener(listener);
     }
-    public PrivateChannel getPrivateChannelByUserId(Long userId) {
-        return getUserById(userId).openPrivateChannel().complete();
-    }
 
     public User getUserById(Long userId) {
         User user;
@@ -53,6 +50,10 @@ public class SogoBot {
         TextChannel channel;
         if((channel = jda.getTextChannelById(botProperty.getVoteChannel())) == null) throw new VoteChannelNotFoundException(botProperty.getVoteChannel());
         return channel;
+    }
+
+    public long getVoteChannelId() {
+        return getVoteChannel().getIdLong();
     }
 
     public Message getVoteMessageById(Long voteMessageId) {

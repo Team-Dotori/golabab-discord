@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.User;
 import org.springframework.stereotype.Service;
 
 import static io.github.key_del_jeeinho.cacophony_lib.domain.action.ActionEntry.chat;
+import static io.github.key_del_jeeinho.cacophony_lib.domain.converter.ConverterEntry.userById;
 
 /*
 SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
@@ -28,10 +29,8 @@ public class VoteConfigurationServiceImpl implements VoteConfigurationService{
 
     @Override
     public void checkChannel(long userId) {
-        User user = sogoBot.getUserById(userId);
+        EmbedMessageDto message = messageFactory.generateCheckChannelMessage(userById(userId));
 
-        EmbedMessageDto message = messageFactory.generateCheckChannelMessage(user);
-
-        chat(message, sogoBot.getVoteChannel().getIdLong());
+        chat(message, sogoBot.getVoteChannelId());
     }
 }

@@ -40,7 +40,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 	//Cacophony Library
-	implementation 'io.github.key-del-jeeinho:cacophony-spring-boot-starter:1.0.8-RELEASE'
+	implementation 'io.github.key-del-jeeinho:cacophony-spring-boot-starter:1.0.9-RELEASE'
 }
 
 test {

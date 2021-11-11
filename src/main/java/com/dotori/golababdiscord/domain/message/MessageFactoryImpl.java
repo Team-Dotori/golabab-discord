@@ -11,6 +11,7 @@ import com.dotori.golababdiscord.domain.ranking.dto.RankingDto;
 import com.dotori.golababdiscord.domain.ranking.dto.RequestRankingDto;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
 import com.dotori.golababdiscord.domain.vote.enum_type.VoteEmoji;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.UserDto;
 import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.*;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.User;
@@ -167,18 +168,18 @@ public class MessageFactoryImpl implements MessageFactory {
     }
 
     @Override
-    public EmbedMessageDto generateChannelChangedMessage(User user) {
+    public EmbedMessageDto generateChannelChangedMessage(UserDto user) {
         TitleDto title = new TitleDto("투표채널을 성공적으로 변경하였습니다!");
-        String description = user.getAsMention() + "이제 해당 채널에서 투표에 참여하실 수 있습니다!";
+        String description = String.format("<@%d>이제 해당 채널에서 투표에 참여하실 수 있습니다!", user.getId());
         FooterDto footer = new FooterDto(null);
 
         return new EmbedMessageDto(DEFAULT_MESSAGE_ID, title, description, DEFAULT_COLOR, DEFAULT_AUTHOR, footer);
     }
 
     @Override
-    public EmbedMessageDto generateCheckChannelMessage(User user) {
+    public EmbedMessageDto generateCheckChannelMessage(UserDto user) {
         TitleDto title = new TitleDto("여기에요 여기!");
-        String description = String.format("%s님, 여기가 바로 공식 투표채널입니다", user.getAsMention());
+        String description = String.format("<@%d>님, 여기가 바로 공식 투표채널입니다", user.getId());
         FooterDto footer = new FooterDto(null);
 
         return new EmbedMessageDto(DEFAULT_MESSAGE_ID, title, description, DEFAULT_COLOR, DEFAULT_AUTHOR, footer);

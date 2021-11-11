@@ -63,7 +63,7 @@ public class CacophonyVoteHandler {
 
     private boolean checkIsUserVote(ReactEvent event) {
         return event.getEventType().equals(ReactEvent.EventType.ADD) &&
-                sogoBot.getVoteChannel().getIdLong() == event.getChannel().getId() &&
+                sogoBot.getVoteChannelId() == event.getChannel().getId() &&
                 voteService.isVoteMessage(event.getMessage().getId());
     }
 
