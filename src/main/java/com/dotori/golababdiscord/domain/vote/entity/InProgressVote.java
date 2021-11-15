@@ -11,6 +11,10 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

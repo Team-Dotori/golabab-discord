@@ -2,13 +2,13 @@ package com.dotori.golababdiscord.domain.vote.service;
 
 import com.dotori.golababdiscord.domain.api.dto.RequestCollectedVoteDto;
 import com.dotori.golababdiscord.domain.api.dto.ResponseMealMenuDto;
-import com.dotori.golababdiscord.domain.api.service.VoteApiService;
 import com.dotori.golababdiscord.domain.api.service.caller.ApiCaller;
 import com.dotori.golababdiscord.domain.discord.SogoBot;
 import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.dto.ReceiverDto;
 import com.dotori.golababdiscord.domain.discord.service.MessageSenderService;
 import com.dotori.golababdiscord.domain.discord.view.MessageViews;
+import com.dotori.golababdiscord.domain.message.MessageFactory;
 import com.dotori.golababdiscord.domain.vote.dto.*;
 import com.dotori.golababdiscord.domain.vote.entity.InProgressVote;
 import com.dotori.golababdiscord.domain.vote.entity.Menu;
@@ -17,6 +17,7 @@ import com.dotori.golababdiscord.domain.vote.enum_type.VoteEmoji;
 import com.dotori.golababdiscord.domain.vote.repository.InProgressVoteRepository;
 import com.dotori.golababdiscord.domain.vote.repository.MenuRepository;
 import com.dotori.golababdiscord.global.utils.DateUtils;
+import io.github.key_del_jeeinho.cacophony_lib.global.dto.message.EmbedMessageDto;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.springframework.context.annotation.Lazy;
@@ -28,11 +29,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.github.key_del_jeeinho.cacophony_lib.domain.action.ActionEntry.chat;
+
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Service
 public class VoteServiceImpl implements VoteService{
     private final ApiCaller apiCaller;
     private final MessageSenderService messageSenderService;
-    private final MessageViews messageViews;
+    private final MessageFactory messageFactory;
     private final InProgressVoteRepository inProgressVoteRepository;
     private final MenuRepository menuRepository;
     private final DateUtils dateUtils;
@@ -41,13 +48,13 @@ public class VoteServiceImpl implements VoteService{
     @Lazy
     public VoteServiceImpl(ApiCaller apiCaller,
                            MessageSenderService messageSenderService,
-                           MessageViews messageViews,
+                           MessageFactory messageFactory,
                            InProgressVoteRepository inProgressVoteRepository,
                            MenuRepository menuRepository,
                            DateUtils dateUtils, SogoBot sogoBot) {
         this.apiCaller = apiCaller;
         this.messageSenderService = messageSenderService;
-        this.messageViews = messageViews;
+        this.messageFactory = messageFactory;
         this.inProgressVoteRepository = inProgressVoteRepository;
         this.menuRepository = menuRepository;
         this.dateUtils = dateUtils;
@@ -66,13 +73,10 @@ public class VoteServiceImpl implements VoteService{
         Long messageId = sendVoteMessageAndGetId(vote);
         return vote.inProgress(messageId);
     }
+
     private Long sendVoteMessageAndGetId(VoteDto vote) {
-        TextChannel channel = sogoBot.getVoteChannel();
-
-        MessageDto message = messageViews.generateVoteOpenedMessage(vote);
-        ReceiverDto receiver = new ReceiverDto(channel);
-
-        return messageSenderService.sendMessage(receiver, message);
+        long channelId = sogoBot.getVoteChannelId();
+        return chat(messageFactory.generateVoteOpenedMessage(vote), channelId);
     }
 
     @Override
@@ -84,7 +88,7 @@ public class VoteServiceImpl implements VoteService{
 
     private VoteResultDto calculateMealVoteResult(InProgressVoteDto dto) {
         VoteResultDto result = new VoteResultDto();
-        Message message = sogoBot.getMessageById(dto.getVoteMessageId());
+        Message message = sogoBot.getVoteMessageById(dto.getVoteMessageId());
 
         message.getReactions().forEach(reaction -> { //모든 종류의 반응을 불러와 reaction 에 하나씩 담는다
             Arrays.stream(VoteEmoji.values())
@@ -104,10 +108,11 @@ public class VoteServiceImpl implements VoteService{
     }
     private void close(InProgressVoteDto dto) {
         Long messageId = dto.getVoteMessageId();
-        Message message = sogoBot.getMessageById(messageId);
+        Message message = sogoBot.getVoteMessageById(messageId);
 
+        //TODO Cacophony 로 마이그레이션 할것
         messageSenderService.clearReactions(message);
-        messageSenderService.editMessageToClose(message, messageViews.generateVoteClosedMessage());
+        messageSenderService.editMessageToClose(message, messageFactory.generateVoteClosedMessage());
     }
 
     @Override

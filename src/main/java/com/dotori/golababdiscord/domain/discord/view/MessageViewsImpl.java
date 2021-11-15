@@ -11,7 +11,6 @@ import com.dotori.golababdiscord.domain.ranking.dto.RankingDto;
 import com.dotori.golababdiscord.domain.ranking.dto.RequestRankingDto;
 import com.dotori.golababdiscord.domain.vote.dto.VoteDto;
 import com.dotori.golababdiscord.domain.vote.enum_type.VoteEmoji;
-import com.dotori.golababdiscord.global.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.utils.MarkdownUtil;
@@ -21,6 +20,10 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.util.List;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Component
 @RequiredArgsConstructor
 public class MessageViewsImpl implements MessageViews{
@@ -41,7 +44,7 @@ public class MessageViewsImpl implements MessageViews{
 
     @Override
     public MessageDto generateArgumentNotFoundMessage() {
-        TitleDto title = new TitleDto("명령어를 찾을 수 없습니다!", "");
+        TitleDto title = new TitleDto("명령어를 찾을 수 없습니다!", null);
         String description = "올바른 명령어를 입력해주세요!";
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
@@ -130,7 +133,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = "소고봇에 가입하신것을 환영합니다!";
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, description, color, author, footer);
     }
@@ -141,7 +144,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = "더욱 퀄리티높은 급식을 위해 가장 맛있었던 메뉴에 투표해주세요!";
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         MessageDto dto = new MessageDto(title, description, color, author, footer);
         for (int i = 0; i < vote.getMenus().size(); i++) {
@@ -158,7 +161,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = "다음 투표에 참여해주세요!";
         Color color = new Color(217, 17, 62);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, description, color, author, footer);
     }
@@ -169,7 +172,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = "기존 투표이모지를 취소하고 시도해주세요!";
         Color color = new Color(217, 17, 62);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, description, color, author, footer);
     }
@@ -179,7 +182,7 @@ public class MessageViewsImpl implements MessageViews{
         TitleDto title = new TitleDto("이거 아셧나요?");
         Color color = new Color(217, 17, 62);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, message, color, author, footer);
     }
@@ -190,7 +193,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = feature.getDisplay() + "기능을 이용하기 위해선 " + permission.getFirstByFeature(feature).getDisplay() + "이상의 권한이 필요합니다";
         Color color = new Color(217, 17, 62);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, description, color, author, footer);
     }
@@ -201,7 +204,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = user.getAsMention() + "이제 해당 채널에서 투표에 참여하실 수 있습니다!";
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, description, color, author, footer);
     }
@@ -212,7 +215,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = String.format("%s님, 여기가 바로 공식 투표채널입니다", user.getAsMention());
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, description, color, author, footer);
     }
@@ -223,7 +226,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = "투표채널에서 이용자님을 멘션하였습니다!";
         Color color = new Color(32, 205, 55);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         return new MessageDto(title, description, color, author, footer);
     }
@@ -234,7 +237,7 @@ public class MessageViewsImpl implements MessageViews{
         String description = "과연 어떤 메뉴가 1위를 차지했을까요?";
         Color color = new Color(32, 75, 205);
         AuthorDto author = new AuthorDto("Dotori 전공동아리");
-        FooterDto footer = new FooterDto("", "");
+        FooterDto footer = new FooterDto("");
 
         MessageDto message = new MessageDto(title, description, color, author, footer);
 
@@ -257,23 +260,13 @@ public class MessageViewsImpl implements MessageViews{
     }
 
     public String getGraph(int percent) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < percent / 5; i++) {
-            sb.append("▉");
-        }
-        switch(percent % 5) {
-            case 4:
-                sb.append("▊");
-                break;
-            case 3:
-                sb.append("▋");
-                break;
-            case 2:
-                sb.append("▍");
-                break;
-            case 1:
-                sb.append("▏");
-                break;
+        StringBuilder sb = new StringBuilder();
+        sb.append("▉".repeat(Math.max(0, percent / 5)));
+        switch (percent % 5) {
+            case 4 -> sb.append("▊");
+            case 3 -> sb.append("▋");
+            case 2 -> sb.append("▍");
+            case 1 -> sb.append("▏");
         }
         return sb.toString();
     }

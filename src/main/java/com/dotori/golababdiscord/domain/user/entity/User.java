@@ -9,6 +9,10 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Entity
 @Getter @Setter
 public class User {

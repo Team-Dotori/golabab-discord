@@ -28,7 +28,7 @@ public class HardCodedLunchApiService implements LunchApiService {
     @Override
     public ResponseDayMenuDto getMealsToday() {
         ResponseEntity<String> response =
-                apiService.get(lunchApiProperty.getBaseUrl() + ":" +  lunchApiProperty.getPort() + "/api/v1/meals/get-meals-today", String.class);
+                apiService.get(lunchApiProperty.getBaseUrl() + ":" +  lunchApiProperty.getPort() + "/api/v1/meals/today", String.class);
         if(response.getStatusCode().equals(HttpStatus.OK)) {
             String responseStr = response.getBody();
             return mapToDto(responseStr);

@@ -15,6 +15,10 @@ import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import org.springframework.stereotype.Component;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @Component
 @RequiredArgsConstructor
 public class VoteHandler implements Handler<GuildMessageReactionAddEvent>{
@@ -26,7 +30,7 @@ public class VoteHandler implements Handler<GuildMessageReactionAddEvent>{
     public void handleEvent(GuildMessageReactionAddEvent event) {
         if(passed(event)) return;
 
-        UserDto voter = userService.getUserDto(event.getUser());
+        UserDto voter = userService.getUserDto(event.getUser().getIdLong());
         Message voteMessage = event.retrieveMessage().complete();
 
         if(!isVoterHavePermission(voter)) throw new PermissionDeniedException(Feature.GOLABAB_VOTE); //sendPermissionDeniedMessage(event);

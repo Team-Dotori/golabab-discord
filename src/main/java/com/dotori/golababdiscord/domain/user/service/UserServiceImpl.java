@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.User;
 import org.springframework.stereotype.Service;
 
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService{
@@ -15,8 +19,8 @@ public class UserServiceImpl implements UserService{
     private final SogoBot sogoBot;
 
     @Override
-    public UserDto getUserDto(User user) {
-        com.dotori.golababdiscord.domain.user.entity.User entity = userRepository.getById(user.getIdLong());
+    public UserDto getUserDto(long userId) {
+        com.dotori.golababdiscord.domain.user.entity.User entity = userRepository.getById(userId);
         if(entity == null) throw new UserNotEnrolledException();
         return new UserDto(entity.getId(), entity.getName(), entity.getEmail(), entity.getDepartmentType(), entity.getPermission());
     }

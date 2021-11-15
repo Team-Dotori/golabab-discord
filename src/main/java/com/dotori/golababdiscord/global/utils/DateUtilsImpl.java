@@ -8,7 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-//@Component
+/*
+SPDX-FileCopyrightText: © 2021 JeeInho <velocia.developer@gmail.com>
+SPDX-License-Identifier: CC BY-NC-ND
+ */
+@Component
 public class DateUtilsImpl implements DateUtils{
     @Override
     public Date getToday() {
