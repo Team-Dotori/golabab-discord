@@ -6,9 +6,9 @@ import com.dotori.golababdiscord.domain.command.action.VoteChannelAction;
 import com.dotori.golababdiscord.domain.command.action.VoteOpenAction;
 import com.dotori.golababdiscord.domain.command.advice.AuthorizeCommandAdvice;
 import com.dotori.golababdiscord.domain.command.advice.VoteCommandAdvice;
-import com.dotori.golababdiscord.domain.command.advice.VoteChannelCommandAdvice;
 import com.dotori.golababdiscord.domain.command.exception.WrongArgumentException;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;
+import com.dotori.golababdiscord.domain.discord.property.BotProperty;
 import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
 import io.github.key_del_jeeinho.cacophony_lib.domain.command.RootCommandGenerator;
 import io.github.key_del_jeeinho.cacophony_lib.domain.command.component.Argument;
@@ -18,7 +18,6 @@ import io.github.key_del_jeeinho.cacophony_lib.global.dto.UserDto;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
-import static io.github.key_del_jeeinho.cacophony_lib.domain.action.ActionEntry.chat;
 import static io.github.key_del_jeeinho.cacophony_lib.domain.command.CommandEntry.*;
 
 /*
@@ -29,24 +28,31 @@ SPDX-License-Identifier: CC BY-NC-ND
 @Component
 @DependsOn("commandManager")
 public class CommandDefiner {
+    private final BotProperty property;
+
     private final AuthorizeAction authorizeAction;
     private final VoteOpenAction voteOpenAction;
     private final VoteChannelAction voteChannelAction;
 
     private final AuthorizeCommandAdvice authorizeAdvice;
     private final VoteCommandAdvice voteAdvice;
-    private final VoteChannelCommandAdvice voteChannelAdvice;
 
-    public CommandDefiner(AuthorizeAction authorizeAction, VoteOpenAction voteOpenAction, VoteChannelAction voteChannelAction, CommandManager commandManager, AuthorizeCommandAdvice authorizeAdvice, VoteCommandAdvice voteAdvice, VoteChannelCommandAdvice voteChannelAdvice) {
+    public CommandDefiner(BotProperty property,
+                          AuthorizeAction authorizeAction,
+                          VoteOpenAction voteOpenAction,
+                          VoteChannelAction voteChannelAction,
+                          CommandManager commandManager,
+                          AuthorizeCommandAdvice authorizeAdvice,
+                          VoteCommandAdvice voteAdvice) {
         this.authorizeAction = authorizeAction;
         this.voteOpenAction = voteOpenAction;
         this.voteChannelAction = voteChannelAction;
+        this.property = property;
         this.authorizeAdvice = authorizeAdvice;
         this.voteAdvice = voteAdvice;
-        this.voteChannelAdvice = voteChannelAdvice;
         RootCommandGenerator.init(commandManager);
 
-        root("라밥아",
+        root(property.getCommandPrefix(),
                 //라밥아 인증
                 command("인증",
                         action(this::authorize)
