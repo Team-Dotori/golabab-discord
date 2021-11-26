@@ -6,14 +6,19 @@ import com.dotori.golababdiscord.domain.api.exception.ApiException;
 import com.dotori.golababdiscord.domain.api.exception.LoadingLunchDataFailureException;
 import com.dotori.golababdiscord.domain.api.exception.MealTypeNotFoundException;
 import com.dotori.golababdiscord.domain.api.property.LunchApiProperty;
+import com.dotori.golababdiscord.domain.logger.annotation.ApiEntry;
 import com.dotori.golababdiscord.domain.vote.enum_type.MealType;
+import com.dotori.golababdiscord.global.utils.DateUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +28,11 @@ import java.util.Map;
 public class HardCodedLunchApiService implements LunchApiService {
     private final ApiService<String> apiService;
     private final LunchApiProperty lunchApiProperty;
+    private final DateUtils dateUtils;
 
-//    @ApiEntry(method = HttpMethod.GET, resourcePath = "/api/v1/meals/get-meals-today")
     @Override
     public ResponseDayMenuDto getMealsToday() {
+        System.out.println(lunchApiProperty.getBaseUrl() + ":" +  lunchApiProperty.getPort() + "/api/v1/meals/today");
         ResponseEntity<String> response =
                 apiService.get(lunchApiProperty.getBaseUrl() + ":" +  lunchApiProperty.getPort() + "/api/v1/meals/today", String.class);
         if(response.getStatusCode().equals(HttpStatus.OK)) {
@@ -46,6 +52,10 @@ public class HardCodedLunchApiService implements LunchApiService {
             throw new LoadingLunchDataFailureException(e);
         }
         Map<String, List<String>> meals = map.get("meals");
+        if(dateUtils.isFriday())
+            return new ResponseDayMenuDto(
+                    new ResponseMealMenuDto(meals.get("breakfast")),
+                    new ResponseMealMenuDto(meals.get("lunch")));
         return new ResponseDayMenuDto(
                 new ResponseMealMenuDto(meals.get("breakfast")),
                 new ResponseMealMenuDto(meals.get("lunch")),
@@ -59,7 +69,6 @@ public class HardCodedLunchApiService implements LunchApiService {
             case BREAKFAST -> getMealsToday().getBreakfast();
             case LUNCH -> getMealsToday().getLunch();
             case DINNER -> getMealsToday().getDinner();
-            default -> throw new MealTypeNotFoundException(meal);
         };
     }
 

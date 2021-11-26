@@ -14,6 +14,13 @@ public class OBTDateUtils implements DateUtils {
         return now;
     }
 
+    @Override
+    public boolean isFriday() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getToday());
+        return cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY;
+    }
+
     public void nextDay() {
         Calendar cDate = Calendar.getInstance();  // Calendar 클래스의 인스턴스 생성
         cDate.setTime(now);

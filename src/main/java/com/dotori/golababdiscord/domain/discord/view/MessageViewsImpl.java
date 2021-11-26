@@ -140,6 +140,14 @@ public class MessageViewsImpl implements MessageViews{
 
     @Override
     public MessageDto generateVoteOpenedMessage(VoteDto vote) {
+        if(vote.getMenus() == null) {
+            TitleDto title = new TitleDto("이런! 급식을 찾을 수 없어요!");
+            String description = "혹시 오늘이 금요일인가요? (금요일에는 석식을 제공하지 않습니다)";
+            Color color = new Color(217, 17, 62);
+            AuthorDto author = new AuthorDto("Dotori 전공동아리");
+            FooterDto footer = new FooterDto("", "");
+            return new MessageDto(title, description, color, author, footer);
+        }
         TitleDto title = new TitleDto(String.format("오늘%s 어떠셧나요?", vote.getMeal().getKorean()));
         String description = "더욱 퀄리티높은 급식을 위해 가장 맛있었던 메뉴에 투표해주세요!";
         Color color = new Color(32, 205, 55);

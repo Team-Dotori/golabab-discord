@@ -27,6 +27,13 @@ public class DateUtilsImpl implements DateUtils{
     }
 
     @Override
+    public boolean isFriday() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getToday());
+        return cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY;
+    }
+
+    @Override
     public int getWeekToDay() {
         Calendar cDate = Calendar.getInstance();  // Calendar 클래스의 인스턴스 생성
         return cDate.get(Calendar.WEEK_OF_MONTH);

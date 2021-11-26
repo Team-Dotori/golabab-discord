@@ -8,5 +8,6 @@ SPDX-License-Identifier: CC BY-NC-ND
  */
 public interface DateUtils {
     Date getToday();
+    boolean isFriday();
     int getWeekToDay();
 }

@@ -19,17 +19,19 @@ SPDX-License-Identifier: CC BY-NC-ND
 @RequiredArgsConstructor
 public class ApiLogger {
     @Around("@annotation(com.dotori.golababdiscord.domain.logger.annotation.ApiEntry)")
-    public Object log(ProceedingJoinPoint pjp) {
+    public Object log(ProceedingJoinPoint pjp) throws Throwable {
         MethodSignature method = (MethodSignature) pjp.getSignature();
         ApiEntry annotation = method.getMethod().getAnnotation(ApiEntry.class);
 
         Object result;
 
-        try {
+        //try {
             result = pjp.proceed();
-        } catch (Throwable throwable) {
+        /*} catch (Throwable throwable) {
             throw new RuntimeException(throwable);
         }
+
+         */
 
         log.info("\"{}\" called that action \"{}\"", annotation.apiName(), annotation.actionName());
         return result;
