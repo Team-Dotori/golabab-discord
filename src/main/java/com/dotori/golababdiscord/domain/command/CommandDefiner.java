@@ -63,11 +63,14 @@ public class CommandDefiner {
                         //라밥아 투표 열기
                         command("열기",
                                 //라밥아 투표 열기 조식
-                                command("조식", action((a, user) -> openVote(MealType.BREAKFAST, user))),
+                                command("조식", action((a, user) -> openVote(MealType.BREAKFAST, user)))
+                                        .whenThrow(PermissionDeniedException.class, this::handlePermissionDeniedException),
                                 //라밥아 투표 열기 중식
-                                command("중식", action((a, user) -> openVote(MealType.LUNCH, user))),
+                                command("중식", action((a, user) -> openVote(MealType.LUNCH, user)))
+                                        .whenThrow(PermissionDeniedException.class, this::handlePermissionDeniedException),
                                 //라밥아 투표 열기 석식
                                 command("석식", action((a, user) -> openVote(MealType.DINNER, user)))
+                                        .whenThrow(PermissionDeniedException.class, this::handlePermissionDeniedException)
                         ),
                         //라밥아 투표 채널
                         command("채널",

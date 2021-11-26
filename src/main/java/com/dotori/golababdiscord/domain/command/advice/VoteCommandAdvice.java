@@ -1,8 +1,6 @@
 package com.dotori.golababdiscord.domain.command.advice;
 
-import com.dotori.golababdiscord.domain.discord.dto.MessageDto;
 import com.dotori.golababdiscord.domain.discord.exception.PermissionDeniedException;
-import com.dotori.golababdiscord.domain.discord.view.MessageViews;
 import com.dotori.golababdiscord.domain.message.MessageFactory;
 import com.dotori.golababdiscord.domain.user.service.UserService;
 import io.github.key_del_jeeinho.cacophony_lib.domain.command.component.Argument;

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
+//@Component
 @Slf4j
 public class OBTVoteSchedulerImpl implements VoteScheduler {
     private final OBTDateUtils dateUtils;

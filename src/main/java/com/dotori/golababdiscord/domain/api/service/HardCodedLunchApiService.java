@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-//@Service
+@Service
 @RequiredArgsConstructor
 public class HardCodedLunchApiService implements LunchApiService {
     private final ApiService<String> apiService;

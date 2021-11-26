@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Random;
 
-@Service
+//@Service
 public class OBTLunchApiService implements LunchApiService {
     private static final String[] RICES = new String[]{"백미밥", "흑미밥", "참치김치볶음밥", "전주비빔밥", "단팥죽", "새우크리미죽", "참치마요", "치킨마요", "차조밥", "오므라이스", "차슈덮밥"};
     private static final String[] SOUP = new String[]{"콩나물김칫국", "소고기무국", "만둣국", "돼지고기김치찌개", "참치김치찌개", "계란국", "소고기미역국", "토란국", "동태찌개", "추어탕", "오리탕", "바지락칼국수", "김치라면"};

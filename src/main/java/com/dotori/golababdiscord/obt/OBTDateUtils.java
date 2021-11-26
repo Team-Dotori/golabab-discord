@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Calendar;
 import java.util.Date;
 
-@Component
+//@Component
 public class OBTDateUtils implements DateUtils {
     Date now = new Date(0);
     @Override

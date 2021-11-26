@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Date;
 
 /*
@@ -48,9 +47,9 @@ public class VoteSchedulerImpl implements VoteScheduler{
         VoteDto breakfastVote = voteService.createNewVote(MealType.BREAKFAST);
         InProgressVoteDto breakfast = voteService.openVote(breakfastVote);
 
-        saveInpProgressVote(breakfast);
+        saveInProgressVote(breakfast);
     }
-    private void saveInpProgressVote(InProgressVoteDto inProgressVote) {
+    private void saveInProgressVote(InProgressVoteDto inProgressVote) {
         voteService.save(inProgressVote);
     }
 
@@ -60,7 +59,7 @@ public class VoteSchedulerImpl implements VoteScheduler{
         VoteDto lunchVote = voteService.createNewVote(MealType.LUNCH);
         InProgressVoteDto lunch = voteService.openVote(lunchVote);
 
-        saveInpProgressVote(lunch);
+        saveInProgressVote(lunch);
     }
 
     @Override
@@ -69,6 +68,6 @@ public class VoteSchedulerImpl implements VoteScheduler{
         VoteDto dinnerVote = voteService.createNewVote(MealType.DINNER);
         InProgressVoteDto dinner = voteService.openVote(dinnerVote);
 
-        saveInpProgressVote(dinner);
+        saveInProgressVote(dinner);
     }
 }
